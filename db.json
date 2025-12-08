@@ -1,0 +1,28 @@
+{
+  "templates": [
+    {
+      "name": "Sample",
+      "id": "1"
+    },
+    {
+      "name": "Harsha",
+      "id": "4b49"
+    },
+    {
+      "id": "441b",
+      "name": "New Template",
+      "body": "",
+      "schema": {
+        "fields": []
+      }
+    },
+    {
+      "id": "610c",
+      "name": "govind",
+      "body": "",
+      "schema": {
+        "fields": []
+      }
+    }
+  ]
+}

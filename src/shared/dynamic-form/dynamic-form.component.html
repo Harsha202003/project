@@ -1,0 +1,15 @@
+<div class="field" *ngFor="let f of schema.fields">
+  <label>{{ f.label }}</label>
+
+  <input *ngIf="f.type === 'text'" [formControlName]="f.key">
+
+  <textarea *ngIf="f.type === 'textarea'" [formControlName]="f.key"></textarea>
+
+  <mat-select *ngIf="f.type === 'select'" [formControlName]="f.key">
+    <mat-option *ngFor="let opt of f.options" [value]="opt.id">
+      {{ opt.label }}
+    </mat-option>
+  </mat-select>
+
+  <input *ngIf="f.type === 'date'" type="date" [formControlName]="f.key">
+</div>

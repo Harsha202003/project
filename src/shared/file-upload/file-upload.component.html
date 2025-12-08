@@ -1,0 +1,6 @@
+<div>
+  <input type="file" (change)="upload($event)">
+  <mat-progress-bar *ngIf="uploading" mode="determinate" [value]="progress"></mat-progress-bar>
+
+  <p *ngIf="url">Uploaded URL: <a [href]="url">{{ url }}</a></p>
+</div>
