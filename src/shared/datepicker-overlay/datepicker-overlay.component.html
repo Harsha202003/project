@@ -1,1 +1,6 @@
-<p>datepicker-overlay works!</p>
+<div #root class="datepicker-overlay">
+  <input type="date" [(ngModel)]="value" />
+  <div class="actions">
+    <button (click)="choose()">Choose</button>
+  </div>
+</div>

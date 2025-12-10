@@ -1,0 +1,29 @@
+.fu-root {
+    font-family: Inter, system-ui;
+}
+
+.file-area {
+    display: inline-block;
+    padding: .6rem .8rem;
+    border-radius: 8px;
+    border: 1px dashed #e6e9ef;
+    cursor: pointer;
+
+    input {
+        display: none;
+    }
+}
+
+.progress {
+    margin-top: .6rem;
+    height: 8px;
+    background: #f3f5fa;
+    border-radius: 6px;
+    overflow: hidden;
+
+    .bar {
+        height: 100%;
+        background: #4a57e2;
+        transition: width .2s ease;
+    }
+}

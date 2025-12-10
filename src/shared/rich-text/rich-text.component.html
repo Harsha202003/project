@@ -1,1 +1,39 @@
-<div id="editor" class="editor"></div>
+<div class="rt-container">
+
+  <!-- Toolbar -->
+  <div class="rt-toolbar">
+    <button (click)="exec('bold')"><b>B</b></button>
+    <button (click)="exec('italic')"><i>I</i></button>
+    <button (click)="exec('underline')"><u>U</u></button>
+    <button (click)="exec('strikeThrough')"><s>S</s></button>
+
+    <span class="sep"></span>
+
+    <button (click)="exec('insertUnorderedList')">•</button>
+    <button (click)="exec('insertOrderedList')">1.</button>
+
+    <span class="sep"></span>
+
+    <button (click)="exec('justifyLeft')">≡</button>
+    <button (click)="exec('justifyCenter')">≣</button>
+    <button (click)="exec('justifyRight')">→</button>
+
+    <span class="sep"></span>
+
+    <input type="color" class="color" (change)="exec('foreColor', $event.target.value)" />
+
+    <span class="sep"></span>
+
+    <button (click)="clear()">🗑</button>
+  </div>
+
+  <!-- Editable Area -->
+  <div
+    #editor
+    class="rt-editor"
+    contenteditable="true"
+    placeholder="Type a message..."
+    (input)="emitContent()"
+  ></div>
+
+</div>

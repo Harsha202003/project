@@ -1,0 +1,59 @@
+.rt-container {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    overflow: hidden;
+}
+
+.rt-toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px;
+    border-bottom: 1px solid #e5e7eb;
+    background: #fafafa;
+
+    button {
+        border: none;
+        background: white;
+        padding: 6px 8px;
+        border-radius: 6px;
+        cursor: pointer;
+        font-size: 14px;
+        transition: 0.15s ease;
+
+        &:hover {
+            background: #eef0ff;
+        }
+    }
+
+    .sep {
+        width: 1px;
+        height: 20px;
+        background: #ddd;
+        margin: 0 4px;
+    }
+
+    .color {
+        width: 28px;
+        height: 28px;
+        padding: 0;
+        border: none;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+}
+
+.rt-editor {
+    min-height: 350px;
+    padding: 15px;
+    font-size: 15px;
+    line-height: 1.6;
+    outline: none;
+
+    &:empty:before {
+        content: attr(placeholder);
+        color: #9ca3af;
+    }
+}

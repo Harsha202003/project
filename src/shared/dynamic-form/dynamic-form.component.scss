@@ -1,0 +1,75 @@
+.dyn-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.4rem;
+    width: 100%;
+}
+
+/* FIELD ROW */
+.field-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* LABELS */
+.field-label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: #222;
+}
+
+.required {
+    color: #e63946;
+    font-weight: bold;
+}
+
+/* INPUTS */
+.input,
+.textarea,
+.select {
+    width: 100%;
+    padding: 0.7rem 0.9rem;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    outline: none;
+    background: #fff;
+    transition: 0.2s ease;
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+    border-color: #4a57e2;
+    box-shadow: 0 0 0 3px rgba(74, 87, 226, 0.25);
+}
+
+/* TEXTAREA */
+.textarea {
+    min-height: 90px;
+    resize: vertical;
+}
+
+/* CHECKBOX */
+.checkbox-label {
+    font-size: 0.95rem;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+/* RESPONSIVE */
+@media (max-width: 600px) {
+
+    .input,
+    .textarea,
+    .select {
+        font-size: 0.9rem;
+        padding: 0.65rem 0.8rem;
+    }
+
+    .field-label {
+        font-size: 0.9rem;
+    }
+}

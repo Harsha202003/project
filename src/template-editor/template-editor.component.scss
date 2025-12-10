@@ -1,0 +1,95 @@
+.editor-page {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: Inter, sans-serif;
+}
+
+/* Header */
+.editor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+
+    h2 {
+        margin: 0;
+        font-size: 1.8rem;
+        font-weight: 700;
+    }
+
+    .actions {
+        display: flex;
+        gap: 1rem;
+
+        button {
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .publish {
+            background: #4a57e2;
+            color: white;
+        }
+
+        .preview {
+            background: white;
+            color: #4a57e2;
+            border: 1px solid #4a57e2;
+        }
+    }
+}
+
+.subtitle {
+    color: #6b7280;
+    margin-top: 0.3rem;
+}
+
+/* Layout */
+.editor-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 2rem;
+}
+
+/* Cards */
+.card {
+    background: #f7f9fc;
+    border: 1px solid #e2e6f0;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.left {
+    min-height: 600px;
+}
+
+.editor-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+
+    section {
+        background: #ffffff;
+        padding: 1rem;
+        border-radius: 10px;
+        border: 1px solid #e4e7ee;
+        box-shadow: 0 1px 4px rgba(0, 0, 20, 0.04);
+
+        h3 {
+            margin-bottom: 0.7rem;
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+    }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+    .editor-grid {
+        grid-template-columns: 1fr;
+    }
+}

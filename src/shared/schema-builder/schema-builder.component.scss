@@ -1,0 +1,66 @@
+.schema-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.row {
+    display: flex;
+    gap: 0.7rem;
+    flex-wrap: wrap;
+
+    input,
+    select {
+        padding: 7px 10px;
+        border-radius: 6px;
+        border: 1px solid #ccc;
+        min-width: 120px;
+    }
+
+    .add-btn {
+        background: #4a57e2;
+        color: white;
+        border: none;
+        padding: 7px 14px;
+        border-radius: 6px;
+        cursor: pointer;
+
+        &:hover {
+            background: #3e48c7;
+        }
+    }
+
+    .req {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+    }
+}
+
+.list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .item {
+        padding: 8px 12px;
+        border-radius: 6px;
+        background: #f4f6fb;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .remove {
+        background: transparent;
+        border: none;
+        color: #ff4444;
+        cursor: pointer;
+    }
+
+    .req-badge {
+        color: #4a57e2;
+        font-size: 12px;
+        margin-left: 6px;
+    }
+}

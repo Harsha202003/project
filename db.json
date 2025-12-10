@@ -1,28 +1,82 @@
 {
   "templates": [
     {
-      "name": "Sample",
-      "id": "1"
-    },
-    {
+      "id": "17d1",
       "name": "Harsha",
-      "id": "4b49"
-    },
-    {
-      "id": "441b",
-      "name": "New Template",
-      "body": "",
+      "body": "<b>Harsha</b>",
       "schema": {
         "fields": []
+      },
+      "formValues": {
+        "Harsha": "9244513510"
+      },
+      "attachments": [
+        "https://storage.example.com/Task-6%20(Frontend).docx"
+      ]
+    },
+    {
+      "id": "6ef8",
+      "name": "Nithish",
+      "body": "",
+      "schema": {
+        "fields": [
+          {
+            "key": "10",
+            "label": "ddd",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      "attachments": [
+        "https://storage.example.com/ChatGPT%20Image%20Dec%207%2C%202025%2C%2012_27_18%20PM.png",
+        "https://storage.example.com/Udutha_Harsha_Software_resume.pdf"
+      ],
+      "formValues": {
+        "10": "27/01/2003"
       }
     },
     {
-      "id": "610c",
-      "name": "govind",
+      "id": "0ca5",
+      "name": "Nikitha",
+      "body": "Hii",
+      "schema": {
+        "fields": [
+          {
+            "key": "VVv",
+            "label": "hh",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      "attachments": [
+        "https://storage.example.com/list.htm"
+      ],
+      "formValues": {
+        "VVv": "54646"
+      }
+    },
+    {
+      "id": "9443",
+      "name": "keerthana",
       "body": "",
       "schema": {
-        "fields": []
-      }
+        "fields": [
+          {
+            "key": "sh",
+            "label": "shj",
+            "type": "date",
+            "required": true
+          }
+        ]
+      },
+      "formValues": {
+        "sh": "2025-12-02"
+      },
+      "attachments": [
+        "https://storage.example.com/Task-6%20(Frontend).docx"
+      ]
     }
   ]
 }

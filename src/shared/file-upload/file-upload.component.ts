@@ -1,41 +1,54 @@
-
-
-// src/app/shared/file-upload/file-upload.component.ts
 import { Component, Output, EventEmitter } from '@angular/core';
-import { TemplateService } from '../../services/template.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
-    selector: 'app-file-upload',
-    standalone: true,
-    template: `
-    <div class="upload">
-      <input type="file" (change)="onFile($event)" />
-      <div *ngIf="uploading">
-        <progress [value]="progress" max="100"></progress> {{progress | number:'1.0-0'}}%
-      </div>
-      <div *ngIf="url">Uploaded: <a [href]="url" target="_blank">{{url}}</a></div>
-    </div>
-  `,
-    styles: ['.upload{display:flex;flex-direction:column;gap:.5rem}']
+  selector: 'app-file-upload',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './file-upload.component.html',
+  styleUrls: ['./file-upload.component.scss']
 })
-export class FileUpload {
-    @Output() uploaded = new EventEmitter<string>();
-    uploading = false;
-    progress = 0;
-    url: string | null = null;
+export class FileUploadComponent {
 
-    constructor(private ts: TemplateService) { }
+  @Output() uploaded = new EventEmitter<string>(); // emits file URL or file name
 
-    onFile(e: Event) {
-        const file = (e.target as HTMLInputElement).files?.[0];
-        if (!file) return;
-        const fd = new FormData(); fd.append('file', file);
-        this.uploading = true; this.progress = 0;
-        const interval = setInterval(() => { this.progress = Math.min(95, this.progress + Math.random() * 20); }, 200);
-        this.ts.upload(fd).subscribe(res => {
-            clearInterval(interval);
-            this.progress = 100; this.uploading = false; this.url = res.url;
-            this.uploaded.emit(this.url);
-        }, () => { clearInterval(interval); this.uploading = false; });
-    }
+  progress = 0;
+  uploading = false;
+  filename = '';
+
+  /**
+   * Triggered when the user selects a file
+   */
+  onFileSelected(event: any) {
+    const file = event.target.files?.[0];
+    if (!file) return;
+
+    this.filename = file.name;
+    this.simulateUpload();  // fake upload animation
+  }
+
+  /**
+   * Simulated upload progress animation
+   */
+  simulateUpload() {
+    this.uploading = true;
+    this.progress = 0;
+
+    const interval = setInterval(() => {
+      this.progress += Math.random() * 18;  // random speed
+
+      if (this.progress >= 100) {
+        clearInterval(interval);
+
+        this.progress = 100;
+        this.uploading = false;
+
+        // Simulated file URL (replace later with real upload API)
+        const fileUrl = `https://storage.example.com/${encodeURIComponent(this.filename)}`;
+
+        // Emit the final uploaded file URL or filename
+        this.uploaded.emit(fileUrl);
+      }
+    }, 180);
+  }
 }

@@ -1,15 +1,56 @@
-<div class="field" *ngFor="let f of schema.fields">
-  <label>{{ f.label }}</label>
+<div class="dyn-form" *ngIf="schema">
+  <ng-container *ngFor="let f of schema.fields">
+    <div class="field-row">
+      <label class="field-label">{{ f.label }} <span *ngIf="f.required" class="required">*</span></label>
 
-  <input *ngIf="f.type === 'text'" [formControlName]="f.key">
+      <ng-container [ngSwitch]="f.type">
+        <input *ngSwitchCase="'text'"
+               class="input"
+               [(ngModel)]="value[f.key]"
+               (ngModelChange)="onValueChange()" />
 
-  <textarea *ngIf="f.type === 'textarea'" [formControlName]="f.key"></textarea>
+        <textarea *ngSwitchCase="'textarea'"
+                  class="textarea"
+                  [(ngModel)]="value[f.key]"
+                  (ngModelChange)="onValueChange()"></textarea>
 
-  <mat-select *ngIf="f.type === 'select'" [formControlName]="f.key">
-    <mat-option *ngFor="let opt of f.options" [value]="opt.id">
-      {{ opt.label }}
-    </mat-option>
-  </mat-select>
+        <select *ngSwitchCase="'select'" class="select" [(ngModel)]="value[f.key]" (ngModelChange)="onValueChange()">
+          <option *ngFor="let opt of f.options || []" [value]="opt">{{ opt }}</option>
+        </select>
 
-  <input *ngIf="f.type === 'date'" type="date" [formControlName]="f.key">
+        <select *ngSwitchCase="'multiselect'" class="select" multiple [(ngModel)]="value[f.key]" (ngModelChange)="onValueChange()">
+          <option *ngFor="let opt of f.options || []" [value]="opt">{{ opt }}</option>
+        </select>
+
+        <!-- DATE PICKER FIELD -->
+<div *ngSwitchCase="'date'" class="date-wrapper">
+
+  <input class="input"
+         type="text"
+         placeholder="Pick a date"
+         [(ngModel)]="value[f.key]"
+         (focus)="openCalendar(f.key)"
+         readonly />
+
+  <!-- Calendar popup -->
+  <div class="calendar" *ngIf="openDateKey === f.key">
+    <input type="date"
+           class="calendar-native"
+           (change)="selectDate(f.key, $event)" />
+
+    <button class="close-btn" (click)="closeCalendar()">Close</button>
+  </div>
+
+</div>
+
+
+        <div *ngSwitchCase="'checkbox'">
+          <label class="checkbox-label">
+            <input type="checkbox" [(ngModel)]="value[f.key]" (ngModelChange)="onValueChange()" />
+            &nbsp;{{ f.label }}
+          </label>
+        </div>
+      </ng-container>
+    </div>
+  </ng-container>
 </div>

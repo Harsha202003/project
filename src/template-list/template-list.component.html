@@ -1,45 +1,33 @@
 <div class="page">
-  <header>
-    <h2>Templates</h2>
 
-    <!-- Instead of directly creating, we trigger create mode -->
-    <button (click)="creating = true">New Template</button>
-  </header>
-
-  <!-- Inline template name input -->
-  <div *ngIf="creating" class="new-template-box">
-    <input
-      [(ngModel)]="newTemplateName"
-      placeholder="Enter template name"
-      autofocus
-    />
-    <input
-      [(ngModel)]="newTemplateContent"
-      placeholder="Enter template content"
-      autofocus
-    />
-
-    <button class="create" (click)="createNewTemplate()">Create</button>
-    <button class="cancel" (click)="cancelCreate()">Cancel</button>
+  <!-- Header -->
+  <div class="header">
+    <h1>Templates</h1>
   </div>
 
-  <div class="list">
-    <div class="item" *ngFor="let t of templates">
-      <div>
-        <ng-container *ngIf="editingId !== t.id; else editBlock">
-          <h3 (click)="open(t)">{{ t.name }}</h3>
-        </ng-container>
+  <!-- Create New Template -->
+  <div class="create-box">
+    <input
+      type="text"
+      placeholder="Enter template name"
+      [(ngModel)]="newTemplateName"
+      class="name-input"
+    />
 
-        <ng-template #editBlock>
-          <input [(ngModel)]="editingName" />
-          <button (click)="saveRename(t)">Save</button>
-        </ng-template>
-      </div>
+    <button class="create-btn" (click)="createNewTemplate()">Create</button>
+    <button class="cancel-btn" (click)="cancelCreate()">Cancel</button>
+  </div>
+
+  <!-- Template List -->
+  <div class="template-list">
+    <div class="template-card" *ngFor="let t of templates">
+      <div class="template-name">{{ t.name }}</div>
 
       <div class="actions">
-        <button (click)="rename(t)">Edit</button>
-        <button (click)="delete(t)">Delete</button>
+        <button class="edit" (click)="open(t)">Edit</button>
+        <button class="delete" (click)="delete(t)">Delete</button>
       </div>
     </div>
   </div>
+
 </div>

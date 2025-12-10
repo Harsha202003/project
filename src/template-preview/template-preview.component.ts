@@ -1,27 +1,37 @@
-// src/app/template-preview/template-preview.component.ts
 import { Component, OnInit } from '@angular/core';
-import { TemplateService } from '../services/template.service';
+import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
-import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import { TemplateService, TemplateModel } from '../services/template.service';
+import { DynamicFormComponent } from '../shared/dynamic-form/dynamic-form.component';
 
 @Component({
   selector: 'app-template-preview',
   standalone: true,
-  template: `<div><h3>Preview</h3><div [innerHTML]="html"></div></div>`
+  imports: [CommonModule, DynamicFormComponent],
+  templateUrl: './template-preview.component.html',
+  styleUrls: ['./template-preview.component.scss']
 })
-export class TemplatePreview implements OnInit {
-  html: SafeHtml = '';
-  constructor(private route: ActivatedRoute, private ts: TemplateService, private s: DomSanitizer) { }
+export class TemplatePreviewComponent implements OnInit {
+
+  template!: TemplateModel;
+  loading = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private ts: TemplateService
+  ) { }
+
   ngOnInit(): void {
-    const id = +this.route.snapshot.paramMap.get('id')!;
-    this.ts.get(id).subscribe(t => {
-      const rendered = this.renderHtml(t.body || '', t.schema);
-      this.html = this.s.bypassSecurityTrustHtml(rendered);
+    const id = this.route.snapshot.paramMap.get('id')!;
+
+    this.ts.getOne(id).subscribe({
+      next: (tpl) => {
+        this.template = tpl;
+        this.loading = false;
+      },
+      error: () => {
+        this.loading = false;
+      }
     });
-  }
-  renderHtml(body: string, schema: any) {
-    let out = body || '';
-    (schema?.fields || []).forEach((f: any) => out = out.replace(new RegExp(`{{\\s*${f.key}\\s*}}`, 'g'), f.sample ?? f.default ?? `Sample ${f.label || f.key}`));
-    return out;
   }
 }

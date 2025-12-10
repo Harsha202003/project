@@ -1,194 +1,187 @@
-// Global container
+/* MAIN PAGE WRAPPER */
 .page {
-    max-width: 1000px;
-    margin: 3rem auto;
-    padding: 0 1.5rem;
-    font-family: "Inter", sans-serif;
-    color: #1e1e1e;
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1.5rem;
+  font-family: "Inter", sans-serif;
+}
 
-    // Page title + button
-    header {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2.5rem;
+/* HEADER */
+.header h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: #111;
+}
 
-        h2 {
-            margin: 0;
-            font-size: 2.4rem;
-            font-weight: 700;
-            letter-spacing: -0.5px;
-            color: #111;
-        }
+/* CREATE NEW TEMPLATE BOX */
+.create-box {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
 
-        button {
-            background: #4a57e2;
-            color: white;
-            padding: 0.65rem 1.4rem;
-            border: none;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            font-weight: 500;
-            transition: all 0.2s ease;
+  background: #f4f6fd;
+  padding: 1.2rem;
+  border-radius: 14px;
+  border: 1px solid #e1e4ed;
+  margin-bottom: 2rem;
+}
 
-            &:hover {
-                background: #3d47c4;
-                transform: translateY(-1px);
-                box-shadow: 0 3px 10px rgba(74, 87, 226, 0.25);
-            }
+/* INPUT FIELD */
+.name-input {
+  flex: 1;
+  padding: 0.9rem 1rem;
+  font-size: 1rem;
+  border-radius: 10px;
+  border: 1px solid #cfd5e3;
+  background: white;
+  transition: border 0.2s ease;
 
-            &:active {
-                transform: translateY(0px);
-                box-shadow: none;
-            }
-        }
-    }
+  &:focus {
+    border-color: #4a57e2;
+    outline: none;
+  }
+}
 
-    // NEW TEMPLATE INPUT ROW
-    .new-template-box {
-        display: flex;
-        align-items: center;
-        gap: 0.8rem;
-        margin-bottom: 1.5rem;
+/* PRIMARY BUTTON */
+.create-btn {
+  background: #4a57e2;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  border: none;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
 
-        input {
-            padding: 0.55rem 0.8rem;
-            font-size: 0.95rem;
-            border: 1px solid #ccc;
-            border-radius: 8px;
-            width: 220px;
-            background: #fff;
+  &:hover {
+    background: #3b46c2;
+  }
+}
 
-            &:focus {
-                border-color: #4a57e2;
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(74, 87, 226, 0.25);
-            }
-        }
+/* CANCEL BUTTON */
+.cancel-btn {
+  background: white;
+  padding: 0.8rem 1.4rem;
+  border-radius: 10px;
+  border: 1px solid #aaa;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
 
-        button {
-            padding: 0.55rem 1rem;
-            width: 110px;
-            height: 42px;
-            font-size: 0.92rem;
-            font-weight: 500;
-            border-radius: 8px;
-            cursor: pointer;
-            border: 1px solid #cfd1dd;
-            background: #fff;
-            transition: all 0.2s ease;
+  &:hover {
+    background: #efefef;
+  }
+}
 
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
+/* TEMPLATE LIST */
+.template-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
 
-        .create {
-            background: #4a57e2;
-            color: white;
-            border-color: #4a57e2;
+/* TEMPLATE CARD */
+.template-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 
-            &:hover {
-                background: #3d47c4;
-                transform: translateY(-1px);
-                box-shadow: 0 3px 10px rgba(74, 87, 226, 0.25);
-            }
-        }
+  background: #f9faff;
+  border: 1px solid #e5e7f0;
+  padding: 1rem 1.4rem;
+  border-radius: 12px;
+  transition: box-shadow 0.2s ease;
 
-        .cancel {
-            background: #f3f5fa;
+  &:hover {
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.06);
+  }
+}
 
-            &:hover {
-                background: #e7e9f2;
-                border-color: #b9bbca;
-            }
-        }
-    }
+/* TEMPLATE NAME */
+.template-name {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
 
-    // Template list container
-    .list {
-        display: flex;
-        flex-direction: column;
-        gap: 1.2rem;
-    }
+/* ACTION BUTTONS */
+.actions {
+  display: flex;
+  gap: 0.8rem;
+}
 
-    // Template card
-    .item {
-        background: #fafbfd;
-        border-radius: 12px;
-        padding: 1.3rem 1.6rem;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border: 1px solid #e4e6ef;
-        transition: all 0.25s ease;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+.actions button {
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+}
 
-        &:hover {
-            background: #fff;
-            border-color: #d0d2e3;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.06);
-        }
+/* EDIT BUTTON */
+.edit {
+  background: #4a57e2;
+  color: white;
 
-        h3 {
-            margin: 0;
-            font-size: 1.3rem;
-            font-weight: 600;
-            cursor: pointer;
-            color: #212529;
+  &:hover {
+    background: #3b46c2;
+  }
+}
 
-            &:hover {
-                color: #4a57e2;
-                text-decoration: underline;
-            }
-        }
+/* DELETE BUTTON */
+.delete {
+  background: #ff4d4d;
+  color: white;
 
-        // Rename mode input
-        input {
-            padding: 0.45rem 0.7rem;
-            font-size: 1rem;
-            border-radius: 6px;
-            border: 1px solid #ccc;
-            width: 220px;
+  &:hover {
+    background: #d63838;
+  }
+}
 
-            &:focus {
-                border-color: #4a57e2;
-                outline: none;
-                box-shadow: 0 0 0 3px rgba(74, 87, 226, 0.25);
-            }
-        }
+/* --------------------- */
+/* RESPONSIVE DESIGN     */
+/* --------------------- */
 
-        // Action buttons (Edit/Delete)
-        .actions {
-            display: flex;
-            gap: 0.6rem;
+@media (max-width: 768px) {
 
-            button {
-                padding: 0.45rem 1rem;
-                font-size: 0.9rem;
-                border-radius: 6px;
-                border: 1px solid #cfd1dd;
-                background: #fff;
-                cursor: pointer;
-                transition: all 0.2s ease;
+  .create-box {
+    flex-direction: column;
+    align-items: stretch;
+  }
 
-                &:hover {
-                    background: #f3f5fa;
-                    border-color: #b9bbca;
-                }
+  .create-btn,
+  .cancel-btn {
+    width: 100%;
+  }
 
-                &.delete-btn {
-                    border-color: #e57373;
-                    color: #d32f2f;
+  .template-card {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-                    &:hover {
-                        background: #ffebee;
-                        border-color: #d32f2f;
-                    }
-                }
-            }
-        }
-    }
+  .actions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
+
+@media (max-width: 480px) {
+  .header h1 {
+    font-size: 1.6rem;
+  }
+
+  .name-input {
+    font-size: 0.95rem;
+    padding: 0.75rem 0.9rem;
+  }
+
+  .template-name {
+    font-size: 1rem;
+  }
+
+  .actions button {
+    padding: 0.45rem 0.8rem;
+    font-size: 0.85rem;
+  }
 }

@@ -1,6 +1,11 @@
-<div>
-  <input type="file" (change)="upload($event)">
-  <mat-progress-bar *ngIf="uploading" mode="determinate" [value]="progress"></mat-progress-bar>
+<div class="fu-root">
+  <label class="file-area">
+    <input type="file" (change)="onFileSelected($event)" />
+    <span *ngIf="!filename">Choose file</span>
+    <span *ngIf="filename">{{ filename }}</span>
+  </label>
 
-  <p *ngIf="url">Uploaded URL: <a [href]="url">{{ url }}</a></p>
+  <div class="progress" *ngIf="uploading || progress>0">
+    <div class="bar" [style.width.%]="progress"></div>
+  </div>
 </div>

@@ -4,60 +4,59 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
 
 export interface TemplateModel {
-    id?: number;
+    id: string;                // FIXED: JSON server uses string IDs
     name: string;
     body: string;
-    schema: any;
+    schema: { fields: any[] };
+    formValues?: any;
+    attachments?: any;
     published?: boolean;
-    updatedAt?: number;
 }
 
 @Injectable({ providedIn: 'root' })
 export class TemplateService {
-    private base = 'http://localhost:3333';
+
+    private base = 'http://localhost:3000';
+
     private _list$ = new BehaviorSubject<TemplateModel[]>([]);
     list$ = this._list$.asObservable();
 
     constructor(private http: HttpClient) { }
 
+    /** GET ALL */
     loadList(): Observable<TemplateModel[]> {
         return this.http
             .get<TemplateModel[]>(`${this.base}/templates`)
             .pipe(tap(list => this._list$.next(list)));
     }
 
-    create(template: Partial<TemplateModel>) {
-        const body = {
-            name: template.name || "Untitled",
-            body: template.body || "",
-            schema: template.schema || { fields: [] }
-        };
-
-        return this.http.post<TemplateModel>(`${this.base}/templates`, body)
-            .pipe(tap(() => this.loadList().subscribe()));
-    }
-
-    get(id: number) {
+    /** GET ONE TEMPLATE */
+    getOne(id: string): Observable<TemplateModel> {
         return this.http.get<TemplateModel>(`${this.base}/templates/${id}`);
     }
 
-    update(id: number, template: Partial<TemplateModel>) {
-        return this.http
-            .put<TemplateModel>(`${this.base}/templates/${id}`, template)
-            .pipe(tap(() => this.loadList().subscribe()));
+    /** CREATE TEMPLATE */
+    create(template: Partial<TemplateModel>) {
+        return this.http.post<TemplateModel>(`${this.base}/templates`, template);
     }
 
-    delete(id: number) {
-        return this.http
-            .delete(`${this.base}/templates/${id}`)
-            .pipe(tap(() => this.loadList().subscribe()));
+    /** UPDATE TEMPLATE */
+    updateTemplate(id: string, data: any) {
+        return this.http.patch(`${this.base}/templates/${id}`, data);
     }
 
-    getOptions(name: string, q: string = '') {
-        const params = new HttpParams().set('q', q);
-        return this.http.get<any[]>(`${this.base}/options/${name}`, { params });
+    /** DELETE TEMPLATE */
+    delete(id: string) {
+        // 1. Update UI instantly
+        const updated = this._list$.value.filter(t => t.id !== id);
+        this._list$.next(updated);
+
+        // 2. Send DELETE request to JSON server
+        return this.http.delete(`${this.base}/templates/${id}`);
     }
 
+
+    /** FILE UPLOAD */
     upload(formData: FormData) {
         return this.http.post<{ url: string }>(`${this.base}/upload`, formData);
     }

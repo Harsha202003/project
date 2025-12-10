@@ -1,0 +1,18 @@
+.datepicker-overlay {
+    position: absolute;
+    z-index: 9999;
+    background: white;
+    border: 1px solid #e6e9ef;
+    padding: .6rem;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(16, 24, 40, 0.06);
+
+    input {
+        padding: .4rem;
+    }
+
+    .actions {
+        text-align: right;
+        margin-top: .5rem;
+    }
+}
