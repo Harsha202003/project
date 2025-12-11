@@ -2,38 +2,65 @@
 
   <!-- Toolbar -->
   <div class="rt-toolbar">
-    <button (click)="exec('bold')"><b>B</b></button>
-    <button (click)="exec('italic')"><i>I</i></button>
-    <button (click)="exec('underline')"><u>U</u></button>
-    <button (click)="exec('strikeThrough')"><s>S</s></button>
+    <button (click)="exec('bold')" title="Bold"><b>B</b></button>
+    <button (click)="exec('italic')" title="Italic"><i>I</i></button>
+    <button (click)="exec('underline')" title="Underline"><u>U</u></button>
+    <button (click)="exec('strikeThrough')" title="Strike"><s>S</s></button>
 
     <span class="sep"></span>
 
-    <button (click)="exec('insertUnorderedList')">•</button>
-    <button (click)="exec('insertOrderedList')">1.</button>
+    <button (click)="exec('insertOrderedList')" title="Numbered">1.</button>
+    <button (click)="exec('insertUnorderedList')" title="Bullets">•</button>
 
     <span class="sep"></span>
 
-    <button (click)="exec('justifyLeft')">≡</button>
-    <button (click)="exec('justifyCenter')">≣</button>
-    <button (click)="exec('justifyRight')">→</button>
+    <button (click)="insertCodeBlock()" title="Code">{{ '{' }}{{ '}' }}</button>
+    <button (click)="insertHorizontalRule()" title="Insert rule">─</button>
+    <button (click)="insertTable()" title="Table">▦</button>
 
     <span class="sep"></span>
 
-    <input type="color" class="color" (change)="exec('foreColor', $event.target.value)" />
-
-    <span class="sep"></span>
-
-    <button (click)="clear()">🗑</button>
+    <button (click)="toggleMoreMenu()" title="More">⋯</button>
+    <div class="more-menu" *ngIf="showMoreMenu">
+      <div class="menu-item" (click)="exec('formatBlock','p')">Paragraph</div>
+      <div class="menu-item" (click)="insertCodeBlock()">Code</div>
+      <div class="menu-item" (click)="clear()">Clear formatting</div>
+      <div class="menu-item" (click)="exec('outdent')">Decrease indent</div>
+      <div class="menu-item" (click)="exec('indent')">Increase indent</div>
+      <div class="menu-item" (click)="insertHorizontalRule()">Insert horizontal rule</div>
+      <div class="menu-item" (click)="insertTable()">Insert table</div>
+    </div>
   </div>
 
-  <!-- Editable Area -->
+  <!-- Editor -->
   <div
     #editor
     class="rt-editor"
     contenteditable="true"
     placeholder="Type a message..."
-    (input)="emitContent()"
-  ></div>
+    (input)="onInput($event)"
+    (keyup)="onKeyUp($event)">
+  </div>
+
+  <!-- Mention box -->
+  <div
+    #mentionBox
+    class="mention-box"
+    *ngIf="mentionOpen"
+    [style.left.px]="popupX"
+    [style.top.px]="popupY">
+    <div class="mb-title">Suggestions</div>
+
+    <div class="item"
+         *ngFor="let u of filteredUsers; let i = index"
+         [class.active]="i === selectedIndex"
+         (click)="insertMention(u)">
+      <img class="avatar" [src]="u.avatar" alt="avatar" />
+      <div class="info">
+        <div class="name">&#64;{{ u.name }}</div>
+        <div class="email">{{ u.email }}</div>
+      </div>
+    </div>
+  </div>
 
 </div>

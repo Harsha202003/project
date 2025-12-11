@@ -1,59 +1,169 @@
-.rt-container {
+:host {
+    display: block;
     width: 100%;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    background: #fff;
-    overflow: hidden;
 }
 
+.rt-container {
+    position: relative;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* Toolbar */
 .rt-toolbar {
     display: flex;
-    align-items: center;
     gap: 8px;
+    align-items: center;
     padding: 10px;
-    border-bottom: 1px solid #e5e7eb;
-    background: #fafafa;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #eee;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.02);
+    margin-bottom: 8px;
 
     button {
-        border: none;
-        background: white;
-        padding: 6px 8px;
-        border-radius: 6px;
+        background: #fff;
+        border: 0;
+        padding: 8px;
+        border-radius: 8px;
         cursor: pointer;
-        font-size: 14px;
-        transition: 0.15s ease;
+        box-shadow: 0 1px 0 rgba(10, 10, 10, 0.05);
+        transition: background .12s, transform .06s;
 
         &:hover {
-            background: #eef0ff;
+            background: #f5f6fb;
+            transform: translateY(-1px);
         }
     }
 
     .sep {
-        width: 1px;
-        height: 20px;
-        background: #ddd;
-        margin: 0 4px;
-    }
-
-    .color {
-        width: 28px;
         height: 28px;
-        padding: 0;
-        border: none;
-        cursor: pointer;
-        border-radius: 4px;
+        width: 1px;
+        background: #eef0f6;
+        border-radius: 2px;
     }
 }
 
-.rt-editor {
-    min-height: 350px;
-    padding: 15px;
-    font-size: 15px;
-    line-height: 1.6;
-    outline: none;
+/* More menu */
+.more-menu {
+    position: absolute;
+    z-index: 40;
+    margin-top: 8px;
+    background: white;
+    border: 1px solid #e6e9f2;
+    border-radius: 8px;
+    box-shadow: 0 8px 30px rgba(20, 20, 40, 0.08);
+    padding: 6px;
+    right: 12px;
+    min-width: 180px;
 
-    &:empty:before {
-        content: attr(placeholder);
-        color: #9ca3af;
+    .menu-item {
+        padding: 8px 12px;
+        cursor: pointer;
+        border-radius: 6px;
+
+        &:hover {
+            background: #f6f8ff;
+        }
+    }
+}
+
+/* Editor */
+.rt-editor {
+    min-height: 320px;
+    border-radius: 10px;
+    border: 1px solid #eef1f6;
+    padding: 18px;
+    background: #fff;
+    box-shadow: 0 6px 20px rgba(20, 20, 40, 0.03);
+    outline: none;
+    white-space: pre-wrap;
+}
+
+/* Mention popup */
+.mention-box {
+    position: absolute;
+    z-index: 80;
+    width: 320px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(15, 15, 25, 0.12);
+    border: 1px solid #e9edf6;
+    overflow: auto;
+    max-height: 260px;
+    padding: 8px;
+
+    .mb-title {
+        font-weight: 700;
+        font-size: 13px;
+        padding: 8px 12px;
+        color: #333;
+        border-bottom: 1px solid #f1f3f8;
+        margin-bottom: 6px;
+    }
+
+    .item {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        padding: 8px;
+        border-radius: 8px;
+        cursor: pointer;
+
+        &:hover,
+        &.active {
+            background: #f5f7ff;
+        }
+
+        .avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+
+        .info {
+            .name {
+                font-weight: 600;
+            }
+
+            .email {
+                font-size: 12px;
+                color: #666;
+            }
+        }
+    }
+}
+
+/* mention chip inserted into editor */
+.mention-chip {
+    display: inline-block;
+    background: #eef5ff;
+    color: #0b3a97;
+    border-radius: 6px;
+    padding: 4px 8px;
+    margin-right: 4px;
+    font-weight: 600;
+    border: 1px solid rgba(10, 60, 160, 0.08);
+    user-select: none;
+}
+
+/* code block style */
+.code-block {
+    background: #0f1724;
+    color: #f8fafc;
+    padding: 12px;
+    border-radius: 8px;
+    overflow: auto;
+    font-family: 'Courier New', monospace;
+}
+
+/* responsive */
+@media (max-width: 900px) {
+    .mention-box {
+        width: 260px;
+    }
+
+    .rt-editor {
+        min-height: 220px;
     }
 }

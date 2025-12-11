@@ -4,10 +4,10 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { TemplateService, TemplateModel } from '../services/template.service';
-import { RichTextComponent } from '../shared/rich-text/rich-text.component';
 import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
 import { SchemaBuilderComponent } from '../shared/schema-builder/schema-builder.component';
 import { DynamicFormComponent } from "../shared/dynamic-form/dynamic-form.component";
+import { RichTextComponent } from '../shared/rich-text/rich-text.component';
 
 @Component({
   selector: 'app-template-editor',
