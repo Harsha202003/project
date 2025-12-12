@@ -1,95 +1,119 @@
-.editor-page {
-    max-width: 1200px;
-    margin: 2rem auto;
-    padding: 0 1.5rem;
-    font-family: Inter, sans-serif;
+/* PAGE WRAPPER */
+:host {
+    display: block;
+    padding: 40px;
+    background: #f4f6f9;
+    font-family: 'Inter', sans-serif;
 }
 
-/* Header */
-.editor-header {
+/* ==============================
+   HEADER WITH BUTTONS
+============================== */
+
+.page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
-
-    h2 {
-        margin: 0;
-        font-size: 1.8rem;
-        font-weight: 700;
-    }
-
-    .actions {
-        display: flex;
-        gap: 1rem;
-
-        button {
-            padding: 0.6rem 1.2rem;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .publish {
-            background: #4a57e2;
-            color: white;
-        }
-
-        .preview {
-            background: white;
-            color: #4a57e2;
-            border: 1px solid #4a57e2;
-        }
-    }
 }
 
-.subtitle {
+.page-header h1 {
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+
+.header-actions {
+    display: flex;
+    gap: 12px;
+}
+
+/* Buttons */
+.btn {
+    padding: 10px 24px;
+    border-radius: 6px;
+    font-size: 15px;
+    cursor: pointer;
+    border: none;
+    transition: 0.2s ease;
+}
+
+.btn.publish {
+    background: #4458ff;
+    color: white;
+}
+
+.btn.publish:hover {
+    background: #2f3fde;
+}
+
+.btn.preview {
+    background: #fff;
+    border: 1px solid #d6d6d6;
+}
+
+.btn.preview:hover {
+    background: #f2f2f2;
+}
+
+/* Subtitle */
+.sub-title {
+    margin-top: 8px;
     color: #6b7280;
-    margin-top: 0.3rem;
+    margin-bottom: 25px;
 }
 
-/* Layout */
-.editor-grid {
+/* ==============================
+   GRID LAYOUT
+============================== */
+
+.editor-layout {
     display: grid;
     grid-template-columns: 2fr 1fr;
-    gap: 2rem;
+    gap: 32px;
+}
+
+/* LEFT + RIGHT COLUMNS */
+.left-column,
+.right-column {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
 }
 
 /* Cards */
 .card {
-    background: #f7f9fc;
-    border: 1px solid #e2e6f0;
+    background: white;
+    padding: 22px;
     border-radius: 12px;
-    padding: 1.5rem;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
 }
 
-.left {
-    min-height: 600px;
+.card h3 {
+    margin-bottom: 16px;
+    font-size: 18px;
+    font-weight: 600;
 }
 
-.editor-sidebar {
+/* Attachments list */
+.attachment-list {
+    margin-top: 12px;
+    padding: 0;
+    list-style: none;
+}
+
+.attachment-list li {
     display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-
-    section {
-        background: #ffffff;
-        padding: 1rem;
-        border-radius: 10px;
-        border: 1px solid #e4e7ee;
-        box-shadow: 0 1px 4px rgba(0, 0, 20, 0.04);
-
-        h3 {
-            margin-bottom: 0.7rem;
-            font-size: 1.1rem;
-            font-weight: 600;
-        }
-    }
+    justify-content: space-between;
+    padding-bottom: 6px;
+    border-bottom: 1px dashed #ddd;
+    margin-bottom: 8px;
 }
 
-/* Responsive */
-@media (max-width: 900px) {
-    .editor-grid {
-        grid-template-columns: 1fr;
-    }
+.remove {
+    background: none;
+    border: none;
+    color: #d13232;
+    cursor: pointer;
+    font-size: 16px;
 }

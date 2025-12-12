@@ -1,23 +1,19 @@
-<div class="editor-page">
+<div class="page-header">
+  <h1>{{ template?.name }}</h1>
 
-  <!-- Header -->
-  <div class="editor-header">
-    <div>
-      <h2>{{ template?.name }}</h2>
-      <!-- <div class="subtitle">Edit template body and fields below</div> -->
-    </div>
-
-    <div class="actions">
-      <button class="publish" (click)="publish()">Publish</button>
-      <button class="preview" (click)="preview()">Preview</button>
-    </div>
+  <div class="header-actions">
+    <button class="btn publish" (click)="publish()">Publish</button>
+    <button class="btn preview" (click)="preview()">Preview</button>
   </div>
+</div>
 
-  <!-- Layout Grid -->
-  <div class="editor-grid">
+<!-- <p class="sub-title">Edit template body, fields & attachments</p> -->
 
-    <!-- Left Side - Template Editor -->
-    <div class="card left">
+<div class="editor-layout">
+  
+  <!-- LEFT SIDE -->
+  <div class="left-column">
+    <div class="card">
       <h3>Template Body</h3>
 
       <app-rich-text
@@ -25,32 +21,40 @@
         (contentChange)="onEditorChange($event)">
       </app-rich-text>
     </div>
+  </div>
 
-    <!-- Right Side -->
-    <div class="editor-sidebar">
+  <!-- RIGHT SIDE -->
+  <div class="right-column">
 
-      <section>
-        <h3>Form Fields</h3>
-        <app-dynamic-form
-          [schema]="template?.schema"
-          [(value)]="formValues">
-        </app-dynamic-form>
-      </section>
-
-      <section>
-        <h3>Attachments</h3>
-        <app-file-upload (uploaded)="onUploaded($event)"></app-file-upload>
-      </section>
-
-      <section>
-        <h3>Schema Builder</h3>
-        <app-schema-builder
-          [fields]="template?.schema?.fields"
-          (schemaChange)="onSchemaChange($event)">
-        </app-schema-builder>
-      </section>
-
+    <div class="card">
+      <h3>Form Fields</h3>
+      <app-dynamic-form
+        [schema]="template?.schema"
+        [(value)]="formValues">
+      </app-dynamic-form>
     </div>
+
+    <div class="card">
+      <h3>Attachments</h3>
+
+      <app-file-upload (uploaded)="onUploaded($event)"></app-file-upload>
+
+      <ul class="attachment-list">
+        <li *ngFor="let file of template.attachments">
+          <a [href]="file" target="_blank">{{ file }}</a>
+          <button class="remove" (click)="removeAttachment(file)">✕</button>
+        </li>
+      </ul>
+    </div>
+
+    <div class="card">
+      <h3>Schema Builder</h3>
+      <app-schema-builder
+        [fields]="template?.schema?.fields"
+        (fieldsChange)="onSchemaChange($event)">
+      </app-schema-builder>
+    </div>
+
   </div>
 
 </div>

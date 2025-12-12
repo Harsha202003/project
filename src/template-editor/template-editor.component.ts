@@ -28,6 +28,7 @@ export class TemplateEditorComponent implements OnInit {
   template!: TemplateModel;
   editorContent = '';
   formValues: any = {};
+  loading = true;
 
   constructor(
     private route: ActivatedRoute,
@@ -40,29 +41,48 @@ export class TemplateEditorComponent implements OnInit {
 
     this.ts.getOne(id).subscribe(t => {
       this.template = t;
+
+      // Load body
       this.editorContent = t.body || '';
-      this.formValues = t.formValues || {};
+
+      // Load form values
+      this.formValues = { ...t.formValues };
+
+      // Ensure required structure exists
+      this.template.schema ||= { fields: [] };
+      this.template.attachments ||= [];
+
+      // Clean old formValues based on current fields
+      this.cleanFormValues();
+
+      this.loading = false;
     });
   }
 
-  // Rich text content update
+  // When editor updates text
   onEditorChange(html: string) {
     this.editorContent = html;
     this.template.body = html;
   }
 
-  // Save Template to JSON
+  // Save template
   publish() {
-    this.ts.updateTemplate(this.template.id, {
+    // Clean form values BEFORE saving
+    this.cleanFormValues();
+
+    const updated = {
       ...this.template,
       body: this.editorContent,
-      formValues: this.formValues
-    }).subscribe(() => {
-      alert("Template Saved Successfully!");
+      formValues: this.formValues,
+      attachments: this.template.attachments
+    };
+
+    this.ts.updateTemplate(this.template.id, updated).subscribe(() => {
+      alert("Template updated successfully!");
     });
   }
 
-  // Open Preview Page
+  // Open preview
   preview() {
     this.router.navigate(
       ['/templates', this.template.id, 'preview'],
@@ -70,25 +90,42 @@ export class TemplateEditorComponent implements OnInit {
     );
   }
 
-  // File Upload Handler (FINAL CORRECT VERSION)
+  // File upload
   onUploaded(url: string) {
-    if (!this.template.attachments) {
-      this.template.attachments = [];
-    }
-
     this.template.attachments.push(url);
 
-    // Save instantly to JSON
     this.ts.updateTemplate(this.template.id, {
       attachments: this.template.attachments
-    }).subscribe(() => {
-      console.log("Attachment saved to JSON:", url);
+    }).subscribe();
+  }
+
+  // Remove file
+  removeAttachment(url: string) {
+    this.template.attachments = this.template.attachments.filter((a: string) => a !== url);
+
+    this.ts.updateTemplate(this.template.id, {
+      attachments: this.template.attachments
+    }).subscribe();
+  }
+
+  // Called when schema builder updates fields
+  onSchemaChange(fields: any[]) {
+    this.template.schema.fields = [...fields];
+
+    // Remove values of deleted fields
+    this.cleanFormValues();
+  }
+
+  // IMPORTANT — removes old values that no longer exist in schema
+  cleanFormValues() {
+    if (!this.template?.schema?.fields) return;
+
+    const allowedKeys = this.template.schema.fields.map(f => f.key);
+
+    Object.keys(this.formValues).forEach(key => {
+      if (!allowedKeys.includes(key)) {
+        delete this.formValues[key];
+      }
     });
   }
-
-  // Schema Update
-  onSchemaChange(fields: any[]) {
-    this.template.schema.fields = fields;
-  }
-
 }

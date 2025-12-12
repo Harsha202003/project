@@ -5,160 +5,150 @@ import {
   Input,
   Output,
   EventEmitter,
-  AfterViewInit
+  AfterViewInit,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 
 @Component({
   standalone: true,
   selector: 'app-rich-text',
-  imports: [CommonModule],
   templateUrl: './rich-text.component.html',
-  styleUrls: ['./rich-text.component.scss']
+  styleUrls: ['./rich-text.component.scss'],
 })
 export class RichTextComponent implements AfterViewInit {
   @ViewChild('editor', { static: true }) editor!: ElementRef<HTMLDivElement>;
 
-  @Input() content = '';
+  @Input() content: string = '';
   @Output() contentChange = new EventEmitter<string>();
 
   showMoreMenu = false;
-  showTablePrompt = false;
-  tableRows = 2;
-  tableCols = 2;
+  showTableGrid = false;
+
+  gridRows = Array(8).fill(0);
+  gridCols = Array(8).fill(0);
+
+  hoverRows = 0;
+  hoverCols = 0;
 
   ngAfterViewInit() {
-    if (this.content) {
-      this.editor.nativeElement.innerHTML = this.content;
-    }
+    this.editor.nativeElement.innerHTML = this.content;
   }
 
-  // Emit content when editor input changes
-  onInput() {
-    this.emitContent();
-  }
-
-  emitContent() {
+  emit() {
     this.contentChange.emit(this.editor.nativeElement.innerHTML);
   }
 
-  // Generic exec wrapper for common commands
+  onInput() {
+    this.emit();
+  }
+
   exec(cmd: string, value: any = null) {
-    try {
-      // Using execCommand for broad browser support (good enough for this editor)
-      document.execCommand(cmd, false, value);
-      this.emitContent();
-    } catch (err) {
-      console.warn('exec failed', cmd, err);
-    }
+    document.execCommand(cmd, false, value);
+    this.emit();
   }
 
-  // Toggle more menu
-  toggleMoreMenu() {
-    this.showMoreMenu = !this.showMoreMenu;
-  }
-  closeMore() {
-    this.showMoreMenu = false;
+  clear() {
+    this.editor.nativeElement.innerHTML = '';
+    this.emit();
   }
 
-  // Clear all inline formatting from selection
-  clearFormatting() {
-    // removeFormat only clears basic inline style on selection
-    document.execCommand('removeFormat', false, undefined);
-    // also attempt to normalize block formatting:
-    this.exec('formatBlock', '<p>');
-    this.emitContent();
-  }
-
-  // Insert a code block (pre element)
-  insertCodeBlock() {
-    const pre = document.createElement('pre');
-    pre.className = 'rt-code';
-    pre.textContent = '/* code */';
-    this.insertNodeAtCursor(pre);
-    this.emitContent();
-  }
-
-  // Insert a horizontal rule
-  insertHorizontalRule() {
-    const hr = document.createElement('hr');
-    this.insertNodeAtCursor(hr);
-    this.emitContent();
-  }
-
-  // Insert table with given rows & cols
-  insertTable(rows = 2, cols = 2) {
-    rows = Math.max(1, Math.min(10, Math.floor(rows)));
-    cols = Math.max(1, Math.min(10, Math.floor(cols)));
-
-    const table = document.createElement('table');
-    table.className = 'rt-table';
-    table.style.borderCollapse = 'collapse';
-    table.style.width = '100%';
-
-    for (let r = 0; r < rows; r++) {
-      const tr = table.insertRow();
-      for (let c = 0; c < cols; c++) {
-        const td = tr.insertCell();
-        td.innerHTML = '&nbsp;';
-        td.style.border = '1px solid #ddd';
-        td.style.padding = '6px';
-      }
-    }
-
-    this.insertNodeAtCursor(table);
-    this.emitContent();
-  }
-
-  // opens small prompt (you can replace with grid UI if you want)
-  openTablePrompt() {
-    this.showTablePrompt = true;
-    this.showMoreMenu = false;
-  }
-  closeTablePrompt() {
-    this.showTablePrompt = false;
-  }
-
-  // undo/redo wrappers
   undo() {
     document.execCommand('undo');
-    this.emitContent();
-  }
-  redo() {
-    document.execCommand('redo');
-    this.emitContent();
+    this.emit();
   }
 
-  // Utility: insert an element/node at current cursor position
-  insertNodeAtCursor(node: Node) {
+  redo() {
+    document.execCommand('redo');
+    this.emit();
+  }
+
+  setSmall() {
+    document.execCommand('fontSize', false, '2');
+    this.emit();
+  }
+
+  setLarge() {
+    document.execCommand('fontSize', false, '5');
+    this.emit();
+  }
+
+  insertQuote() {
+    document.execCommand('formatBlock', false, 'blockquote');
+    this.emit();
+  }
+
+  insertLink() {
+    const url = prompt('Enter URL:');
+    if (url) {
+      document.execCommand('createLink', false, url);
+      this.emit();
+    }
+  }
+
+  // toggleMoreMenu() {
+  //   this.showMoreMenu = !this.showMoreMenu;
+  // }
+
+  // clearFormatting() {
+  //   document.execCommand('removeFormat', false);
+  //   this.emit();
+  // }
+
+  // insertHorizontalRule() {
+  //   document.execCommand('insertHorizontalRule');
+  //   this.emit();
+  // }
+
+  // insertCodeBlock() {
+  //   const pre = document.createElement('pre');
+  //   pre.textContent = '/* code */';
+  //   pre.style.background = '#f4f4f4';
+  //   pre.style.padding = '10px';
+  //   pre.style.borderRadius = '6px';
+  //   this.insertNode(pre);
+  // }
+
+  // toggleTableGrid() {
+  //   this.showTableGrid = !this.showTableGrid;
+  // }
+
+  // onHover(r: number, c: number) {
+  //   this.hoverRows = r;
+  //   this.hoverCols = c;
+  // }
+
+  // insertTable(rows: number, cols: number) {
+  //   let html = `<table class="rt-table">`;
+  //   for (let r = 0; r < rows; r++) {
+  //     html += '<tr>';
+  //     for (let c = 0; c < cols; c++) {
+  //       html += `<td>&nbsp;</td>`;
+  //     }
+  //     html += '</tr>';
+  //   }
+  //   html += '</table><br/>';
+
+  //   document.execCommand('insertHTML', false, html);
+  //   this.showTableGrid = false;
+  //   this.emit();
+  // }
+setColor(event: any) {
+  const color = event.target.value;
+  document.execCommand('foreColor', false, color);
+  this.emit();
+}
+
+  insertNode(node: HTMLElement) {
     const sel = window.getSelection();
-    if (!sel || !sel.rangeCount) {
-      // fallback: append to editor
+    if (!sel?.rangeCount) {
       this.editor.nativeElement.appendChild(node);
       return;
     }
-
     const range = sel.getRangeAt(0);
-    // Delete any selection content
     range.deleteContents();
-
-    // Insert node
     range.insertNode(node);
-
-    // Move caret after inserted node
-    range.setStartAfter(node);
-    range.collapse(true);
+    range.collapse(false);
     sel.removeAllRanges();
     sel.addRange(range);
-  }
-
-  // Basic keyboard handling (optional)
-  onKeyUp(evt: KeyboardEvent) {
-    // if user pressed Ctrl+Z/Ctrl+Y — we already have undo/redo bound in toolbar,
-    // but keep a small handler to emit content after such keys so parent stays in sync.
-    if ((evt.ctrlKey || evt.metaKey) && (evt.key === 'z' || evt.key === 'y')) {
-      // small timeout to allow action to happen
-      setTimeout(() => this.emitContent(), 50);
-    }
+    this.emit();
   }
 }

@@ -1,46 +1,13 @@
 {
   "templates": [
     {
-      "id": "17d1",
-      "name": "Harsha",
-      "body": "Hello&nbsp;",
-      "schema": {
-        "fields": []
-      },
-      "formValues": {
-        "Harsha": "9244513510"
-      },
-      "attachments": [
-        "https://storage.example.com/Task-6%20(Frontend).docx"
-      ]
-    },
-    {
-      "id": "6ef8",
-      "name": "Nithish",
-      "body": "",
-      "schema": {
-        "fields": []
-      },
-      "formValues": {},
-      "attachments": []
-    },
-    {
       "id": "0ca5",
       "name": "Nikitha",
-      "body": "Hii",
+      "body": "Hello",
       "schema": {
-        "fields": [
-          {
-            "key": "VVv",
-            "label": "hh",
-            "type": "text",
-            "required": true
-          }
-        ]
+        "fields": []
       },
-      "attachments": [
-        "https://storage.example.com/list.htm"
-      ],
+      "attachments": [],
       "formValues": {
         "VVv": "54646"
       }
@@ -48,43 +15,37 @@
     {
       "id": "9443",
       "name": "keerthana",
-      "body": "",
+      "body": "Hello World",
       "schema": {
-        "fields": [
-          {
-            "key": "sh",
-            "label": "shj",
-            "type": "date",
-            "required": true
-          }
-        ]
+        "fields": []
       },
       "formValues": {
         "sh": "2025-12-02"
       },
-      "attachments": [
-        "https://storage.example.com/Task-6%20(Frontend).docx"
-      ]
+      "attachments": []
     },
     {
       "id": "8682",
       "name": "Govind",
-      "body": "",
+      "body": "Harsha Hello World",
       "schema": {
-        "fields": [
-          {
-            "key": "hgfd",
-            "label": "hgfd",
-            "type": "text",
-            "required": true
-          }
-        ]
+        "fields": []
+      },
+      "attachments": [],
+      "formValues": {}
+    },
+    {
+      "id": "f2a9",
+      "name": "Ajay",
+      "body": "<b>Hello</b>",
+      "schema": {
+        "fields": []
       },
       "attachments": [
-        "https://storage.example.com/ChatGPT%20Image%20Dec%207%2C%202025%2C%2012_27_18%20PM.png"
+        "https://storage.example.com/bookdetail.htm"
       ],
       "formValues": {
-        "hgfd": "503001"
+        "H": "888"
       }
     }
   ]

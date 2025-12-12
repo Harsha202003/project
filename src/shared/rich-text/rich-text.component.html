@@ -1,9 +1,12 @@
 <div class="rt-container">
+
+  <!-- Toolbar -->
   <div class="rt-toolbar">
+
     <button (click)="exec('bold')" title="Bold"><b>B</b></button>
     <button (click)="exec('italic')" title="Italic"><i>I</i></button>
     <button (click)="exec('underline')" title="Underline"><u>U</u></button>
-    <button (click)="exec('strikeThrough')" title="Strike"><s>S</s></button>
+    <button (click)="exec('strikeThrough')" title="Strikethrough"><s>S</s></button>
 
     <span class="sep"></span>
 
@@ -12,47 +15,79 @@
 
     <span class="sep"></span>
 
-    <button (click)="exec('justifyLeft')" title="Align left">≡</button>
-    <button (click)="exec('justifyCenter')" title="Center">≣</button>
-    <button (click)="exec('justifyRight')" title="Align right">→</button>
+    <button (click)="exec('outdent')" title="Decrease indent">⇤</button>
+    <button (click)="exec('indent')" title="Increase indent">⇥</button>
 
     <span class="sep"></span>
 
-    <button (click)="toggleMoreMenu()" title="More">⋯</button>
+    <button (click)="setSmall()" title="Small text">A</button>
+    <button (click)="setLarge()" title="Large text">AA</button>
 
-    <!-- undo / redo -->
-    <button (click)="undo()" title="Undo">↶</button>
-    <button (click)="redo()" title="Redo">↷</button>
-  </div>
+    <span class="sep"></span>
 
-  <!-- More menu -->
-  <div class="more-menu" *ngIf="showMoreMenu">
-    <div class="menu-item" (click)="exec('formatBlock', '<p>'); closeMore()">Paragraph</div>
-    <div class="menu-item" (click)="insertCodeBlock(); closeMore()">Code block</div>
-    <div class="menu-item" (click)="clearFormatting(); closeMore()">Clear formatting</div>
-    <div class="menu-item" (click)="exec('outdent'); closeMore()">Decrease indent</div>
-    <div class="menu-item" (click)="exec('indent'); closeMore()">Increase indent</div>
-    <div class="menu-item" (click)="insertHorizontalRule(); closeMore()">Insert horizontal rule</div>
-    <div class="menu-item" (click)="openTablePrompt()">Insert table (pick)</div>
-  </div>
+    <button (click)="insertQuote()" title="Quote">❞</button>
 
-  <!-- optional inline simple table prompt -->
-  <div class="table-prompt" *ngIf="showTablePrompt">
-    <label>Rows: <input type="number" min="1" max="10" [(ngModel)]="tableRows"></label>
-    <label>Cols: <input type="number" min="1" max="10" [(ngModel)]="tableCols"></label>
-    <div class="table-actions">
-      <button (click)="insertTable(tableRows, tableCols); closeTablePrompt(); closeMore()">Insert</button>
-      <button (click)="closeTablePrompt()">Cancel</button>
+    <span class="sep"></span>
+
+    <button (click)="insertLink()" title="Insert link">🔗</button>
+
+    <span class="sep"></span>
+    <!-- Font Color -->
+<button title="Text Color" class="color-btn">
+  <span class="color-icon">A</span>
+  <input type="color" class="color-picker" (input)="setColor($event)" />
+</button>
+
+
+    <button (click)="undo()" title="Undo">↺</button>
+    <button (click)="redo()" title="Redo">↻</button>
+
+    <span class="sep"></span>
+
+    <!-- <button (click)="toggleTableGrid()" title="Insert table">
+      <span class="table-icon">▦</span>
+    </button> -->
+
+    <!-- Table Grid Picker -->
+    <div class="table-grid" *ngIf="showTableGrid">
+      <div class="title">Insert {{ hoverRows }} × {{ hoverCols }} table</div>
+
+      <div class="grid">
+        <div *ngFor="let r of gridRows; let ri = index">
+          <span
+            *ngFor="let c of gridCols; let ci = index"
+            class="cell"
+            [class.active]="ri < hoverRows && ci < hoverCols"
+            (mouseenter)="onHover(ri+1, ci+1)"
+            (click)="insertTable(ri+1, ci+1)"
+          ></span>
+        </div>
+      </div>
     </div>
+
+    <span class="sep"></span>
+
+    <!-- More menu -->
+    <!-- <button (click)="toggleMoreMenu()" title="More">⋯</button>
+
+    <div class="more-menu" *ngIf="showMoreMenu">
+      <div class="menu-item" (click)="clearFormatting()">Clear formatting</div>
+      <div class="menu-item" (click)="insertCodeBlock()">Code block</div>
+      <div class="menu-item" (click)="insertHorizontalRule()">Horizontal line</div>
+    </div> -->
+
+    <!-- Trash -->
+    <button class="trash" (click)="clear()" title="Clear editor">🗑</button>
+
   </div>
 
-  <!-- editable content area -->
+  <!-- Editable content -->
   <div
     #editor
     class="rt-editor"
     contenteditable="true"
+    placeholder="Type a message…"
     (input)="onInput()"
-    (keyup)="onKeyUp($event)"
-    placeholder="Type a message..."
   ></div>
+
 </div>
