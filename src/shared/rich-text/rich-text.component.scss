@@ -1,169 +1,79 @@
-:host {
-    display: block;
-    width: 100%;
-}
-
 .rt-container {
-    position: relative;
-    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  position: relative;
+  width: 100%;
+  font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
 }
 
-/* Toolbar */
 .rt-toolbar {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    padding: 10px;
-    background: #fff;
-    border-radius: 10px;
-    border: 1px solid #eee;
-    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.02);
-    margin-bottom: 8px;
-
-    button {
-        background: #fff;
-        border: 0;
-        padding: 8px;
-        border-radius: 8px;
-        cursor: pointer;
-        box-shadow: 0 1px 0 rgba(10, 10, 10, 0.05);
-        transition: background .12s, transform .06s;
-
-        &:hover {
-            background: #f5f6fb;
-            transform: translateY(-1px);
-        }
-    }
-
-    .sep {
-        height: 28px;
-        width: 1px;
-        background: #eef0f6;
-        border-radius: 2px;
-    }
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 8px;
+  background: #fff;
+  border-radius: 8px;
 }
 
-/* More menu */
+button {
+  background: #f6f7fb;
+  border: 1px solid #e3e5ee;
+  padding: 6px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover { background: #eef2ff; }
+
+.sep {
+  width: 1px;
+  height: 20px;
+  background: #e7e7ee;
+  margin: 0 6px;
+}
+
 .more-menu {
-    position: absolute;
-    z-index: 40;
-    margin-top: 8px;
-    background: white;
-    border: 1px solid #e6e9f2;
-    border-radius: 8px;
-    box-shadow: 0 8px 30px rgba(20, 20, 40, 0.08);
-    padding: 6px;
-    right: 12px;
-    min-width: 180px;
-
-    .menu-item {
-        padding: 8px 12px;
-        cursor: pointer;
-        border-radius: 6px;
-
-        &:hover {
-            background: #f6f8ff;
-        }
-    }
+  position: absolute;
+  top: 46px;
+  left: 120px;
+  z-index: 50;
+  background: #fff;
+  border: 1px solid #e6e6ea;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+  border-radius: 8px;
+  padding: 6px;
+  min-width: 200px;
 }
 
-/* Editor */
+.menu-item {
+  padding: 8px;
+  cursor: pointer;
+  border-radius: 6px;
+}
+.menu-item:hover { background: #f4f6ff; }
+
+.table-prompt {
+  margin-top: 8px;
+  display:flex;
+  gap:8px;
+  align-items:center;
+}
+.table-prompt input { width: 64px; padding:4px; border-radius:6px; border:1px solid #ddd; }
+
 .rt-editor {
-    min-height: 320px;
-    border-radius: 10px;
-    border: 1px solid #eef1f6;
-    padding: 18px;
-    background: #fff;
-    box-shadow: 0 6px 20px rgba(20, 20, 40, 0.03);
-    outline: none;
-    white-space: pre-wrap;
+  margin-top: 12px;
+  border: 1px solid #e8e9ef;
+  min-height: 220px;
+  padding: 12px;
+  border-radius: 8px;
+  background: #fff;
+  outline: none;
 }
 
-/* Mention popup */
-.mention-box {
-    position: absolute;
-    z-index: 80;
-    width: 320px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(15, 15, 25, 0.12);
-    border: 1px solid #e9edf6;
-    overflow: auto;
-    max-height: 260px;
-    padding: 8px;
-
-    .mb-title {
-        font-weight: 700;
-        font-size: 13px;
-        padding: 8px 12px;
-        color: #333;
-        border-bottom: 1px solid #f1f3f8;
-        margin-bottom: 6px;
-    }
-
-    .item {
-        display: flex;
-        gap: 10px;
-        align-items: center;
-        padding: 8px;
-        border-radius: 8px;
-        cursor: pointer;
-
-        &:hover,
-        &.active {
-            background: #f5f7ff;
-        }
-
-        .avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        .info {
-            .name {
-                font-weight: 600;
-            }
-
-            .email {
-                font-size: 12px;
-                color: #666;
-            }
-        }
-    }
+.rt-code {
+  background: #0f1724;
+  color: #fff;
+  padding: 12px;
+  border-radius: 6px;
 }
 
-/* mention chip inserted into editor */
-.mention-chip {
-    display: inline-block;
-    background: #eef5ff;
-    color: #0b3a97;
-    border-radius: 6px;
-    padding: 4px 8px;
-    margin-right: 4px;
-    font-weight: 600;
-    border: 1px solid rgba(10, 60, 160, 0.08);
-    user-select: none;
-}
-
-/* code block style */
-.code-block {
-    background: #0f1724;
-    color: #f8fafc;
-    padding: 12px;
-    border-radius: 8px;
-    overflow: auto;
-    font-family: 'Courier New', monospace;
-}
-
-/* responsive */
-@media (max-width: 900px) {
-    .mention-box {
-        width: 260px;
-    }
-
-    .rt-editor {
-        min-height: 220px;
-    }
+.rt-table {
+  margin: 6px 0;
 }
