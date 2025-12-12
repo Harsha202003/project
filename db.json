@@ -3,13 +3,20 @@
     {
       "id": "0ca5",
       "name": "Nikitha",
-      "body": "Hello",
+      "body": "<br>",
       "schema": {
-        "fields": []
+        "fields": [
+          {
+            "key": "Company",
+            "label": "Brand",
+            "type": "text",
+            "required": true
+          }
+        ]
       },
       "attachments": [],
       "formValues": {
-        "VVv": "54646"
+        "Company": "tech.at.core"
       }
     },
     {
@@ -37,16 +44,33 @@
     {
       "id": "f2a9",
       "name": "Ajay",
-      "body": "<b>Hello</b>",
+      "body": "",
+      "schema": {
+        "fields": [
+          {
+            "key": "dfg",
+            "label": "ghj",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      "attachments": [
+        "https://storage.example.com/Task-6%20(Frontend).docx"
+      ],
+      "formValues": {
+        "dfg": "503001"
+      }
+    },
+    {
+      "id": "2acb",
+      "name": "sdfghjk",
+      "body": "",
       "schema": {
         "fields": []
       },
-      "attachments": [
-        "https://storage.example.com/bookdetail.htm"
-      ],
-      "formValues": {
-        "H": "888"
-      }
+      "attachments": [],
+      "formValues": {}
     }
   ]
 }

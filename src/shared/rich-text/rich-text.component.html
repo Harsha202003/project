@@ -1,93 +1,74 @@
 <div class="rt-container">
 
+  <!-- Mention Dropdown -->
+  <ul
+    class="mention-box"
+    *ngIf="showMention"
+    [style.left.px]="mentionX"
+    [style.top.px]="mentionY"
+  >
+    <li
+  *ngFor="let user of filteredUsers; let i = index"
+  [class.active]="i === activeIndex"
+  (mousedown)="selectMention(user)"
+>
+  {{ '@' + user }}
+</li>
+
+
+  </ul>
+
   <!-- Toolbar -->
   <div class="rt-toolbar">
 
-    <button (click)="exec('bold')" title="Bold"><b>B</b></button>
-    <button (click)="exec('italic')" title="Italic"><i>I</i></button>
-    <button (click)="exec('underline')" title="Underline"><u>U</u></button>
-    <button (click)="exec('strikeThrough')" title="Strikethrough"><s>S</s></button>
+    <button (click)="exec('bold')"><b>B</b></button>
+    <button (click)="exec('italic')"><i>I</i></button>
+    <button (click)="exec('underline')"><u>U</u></button>
+    <button (click)="exec('strikeThrough')"><s>S</s></button>
 
     <span class="sep"></span>
 
-    <button (click)="exec('insertUnorderedList')" title="Bullet">•</button>
-    <button (click)="exec('insertOrderedList')" title="Numbered">1.</button>
+    <button (click)="exec('insertUnorderedList')">•</button>
+    <button (click)="exec('insertOrderedList')">1.</button>
 
     <span class="sep"></span>
 
-    <button (click)="exec('outdent')" title="Decrease indent">⇤</button>
-    <button (click)="exec('indent')" title="Increase indent">⇥</button>
+    <button (click)="exec('outdent')">⇤</button>
+    <button (click)="exec('indent')">⇥</button>
 
     <span class="sep"></span>
 
-    <button (click)="setSmall()" title="Small text">A</button>
-    <button (click)="setLarge()" title="Large text">AA</button>
+    <button (click)="setSmall()">A</button>
+    <button (click)="setLarge()">AA</button>
 
     <span class="sep"></span>
 
-    <button (click)="insertQuote()" title="Quote">❞</button>
+    <button (click)="insertLink()">🔗</button>
 
     <span class="sep"></span>
 
-    <button (click)="insertLink()" title="Insert link">🔗</button>
-
-    <span class="sep"></span>
-    <!-- Font Color -->
-<button title="Text Color" class="color-btn">
-  <span class="color-icon">A</span>
-  <input type="color" class="color-picker" (input)="setColor($event)" />
-</button>
-
-
-    <button (click)="undo()" title="Undo">↺</button>
-    <button (click)="redo()" title="Redo">↻</button>
+    <button class="color-btn">
+      <span class="color-icon">A</span>
+      <input type="color" class="color-picker" (input)="setColor($event)" />
+    </button>
 
     <span class="sep"></span>
 
-    <!-- <button (click)="toggleTableGrid()" title="Insert table">
-      <span class="table-icon">▦</span>
-    </button> -->
-
-    <!-- Table Grid Picker -->
-    <div class="table-grid" *ngIf="showTableGrid">
-      <div class="title">Insert {{ hoverRows }} × {{ hoverCols }} table</div>
-
-      <div class="grid">
-        <div *ngFor="let r of gridRows; let ri = index">
-          <span
-            *ngFor="let c of gridCols; let ci = index"
-            class="cell"
-            [class.active]="ri < hoverRows && ci < hoverCols"
-            (mouseenter)="onHover(ri+1, ci+1)"
-            (click)="insertTable(ri+1, ci+1)"
-          ></span>
-        </div>
-      </div>
-    </div>
+    <button (click)="undo()">↺</button>
+    <button (click)="redo()">↻</button>
 
     <span class="sep"></span>
 
-    <!-- More menu -->
-    <!-- <button (click)="toggleMoreMenu()" title="More">⋯</button>
-
-    <div class="more-menu" *ngIf="showMoreMenu">
-      <div class="menu-item" (click)="clearFormatting()">Clear formatting</div>
-      <div class="menu-item" (click)="insertCodeBlock()">Code block</div>
-      <div class="menu-item" (click)="insertHorizontalRule()">Horizontal line</div>
-    </div> -->
-
-    <!-- Trash -->
-    <button class="trash" (click)="clear()" title="Clear editor">🗑</button>
-
+    <button class="trash" (click)="clear()">🗑</button>
   </div>
 
-  <!-- Editable content -->
+  <!-- Editable Area -->
   <div
     #editor
     class="rt-editor"
     contenteditable="true"
-    placeholder="Type a message…"
     (input)="onInput()"
+    (keyup)="onKeyUp($event)"
   ></div>
 
 </div>

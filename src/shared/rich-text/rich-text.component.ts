@@ -1,154 +1,174 @@
 import {
   Component,
-  ElementRef,
-  ViewChild,
   Input,
   Output,
   EventEmitter,
-  AfterViewInit,
+  ViewChild,
+  ElementRef,
+  HostListener
 } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
-  standalone: true,
   selector: 'app-rich-text',
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './rich-text.component.html',
-  styleUrls: ['./rich-text.component.scss'],
+  styleUrls: ['./rich-text.component.scss']
 })
-export class RichTextComponent implements AfterViewInit {
-  @ViewChild('editor', { static: true }) editor!: ElementRef<HTMLDivElement>;
+export class RichTextComponent {
 
-  @Input() content: string = '';
+  @Input() content = '';
   @Output() contentChange = new EventEmitter<string>();
 
-  showMoreMenu = false;
-  showTableGrid = false;
+  @ViewChild('editor') editor!: ElementRef<HTMLDivElement>;
 
-  gridRows = Array(8).fill(0);
-  gridCols = Array(8).fill(0);
+  // -----------------------------
+  // MENTION SYSTEM
+  // -----------------------------
+  allUsers = ["nithish", "nikitha", "keerthana", "govind", "ajay"];
+  filteredUsers: string[] = [];
 
-  hoverRows = 0;
-  hoverCols = 0;
+  showMention = false;
+  typed = "";
+  mentionX = 0;
+  mentionY = 0;
+  activeIndex = 0;
 
-  ngAfterViewInit() {
-    this.editor.nativeElement.innerHTML = this.content;
-  }
-
-  emit() {
-    this.contentChange.emit(this.editor.nativeElement.innerHTML);
-  }
-
+  // -----------------------------
+  // BASE EDITOR INPUT
+  // -----------------------------
   onInput() {
-    this.emit();
+    this.content = this.editor.nativeElement.innerHTML;
+    this.contentChange.emit(this.content);
   }
 
-  exec(cmd: string, value: any = null) {
-    document.execCommand(cmd, false, value);
-    this.emit();
+  // -----------------------------
+  // KEY LISTENING FOR @
+  // -----------------------------
+  onKeyUp(event: KeyboardEvent) {
+    const sel = window.getSelection();
+    if (!sel || !sel.anchorNode) return;
+
+    const text = sel.anchorNode.textContent || "";
+
+    // Detect @mentions
+    const match = text.match(/@([a-zA-Z0-9]*)$/);
+
+    if (match) {
+      this.typed = match[1];
+
+      // Filter list
+      this.filteredUsers = this.allUsers.filter(u =>
+        u.toLowerCase().startsWith(this.typed.toLowerCase())
+      );
+
+      if (this.filteredUsers.length > 0) {
+        this.showMention = true;
+        this.positionMentionDropdown();
+      } else {
+        this.showMention = false;
+      }
+    } else {
+      this.showMention = false;
+    }
+
+    // ENTER → Choose active mention
+    if (event.key === "Enter" && this.showMention) {
+      event.preventDefault();
+      this.selectMention(this.filteredUsers[this.activeIndex]);
+    }
   }
 
-  clear() {
-    this.editor.nativeElement.innerHTML = '';
-    this.emit();
+  // -----------------------------
+  // POSITION DROPDOWN
+  // -----------------------------
+  positionMentionDropdown() {
+    const sel = window.getSelection();
+    if (!sel || sel.rangeCount === 0) return;
+
+    const range = sel.getRangeAt(0).cloneRange();
+    range.collapse(true);
+    const rect = range.getBoundingClientRect();
+
+    if (rect) {
+      this.mentionX = rect.left;
+      this.mentionY = rect.bottom + window.scrollY + 8;
+    }
   }
 
-  undo() {
-    document.execCommand('undo');
-    this.emit();
+  // -----------------------------
+  // INSERT MENTION
+  // -----------------------------
+  selectMention(name: string) {
+    const sel = window.getSelection();
+    if (!sel || !sel.anchorNode) return;
+
+    const node = sel.anchorNode;
+    const text = node.textContent || "";
+
+    // Replace @typed with @name
+    node.textContent = text.replace(/@([a-zA-Z0-9]*)$/, `@${name} `);
+
+    this.showMention = false;
+
+    this.content = this.editor.nativeElement.innerHTML;
+    this.contentChange.emit(this.content);
   }
 
-  redo() {
-    document.execCommand('redo');
-    this.emit();
+  // -----------------------------
+  // TOOLBAR COMMANDS
+  // -----------------------------
+  exec(cmd: string) {
+    document.execCommand(cmd, false);
+    this.onInput();
   }
 
   setSmall() {
-    document.execCommand('fontSize', false, '2');
-    this.emit();
+    document.execCommand("fontSize", false, "2");
+    this.onInput();
   }
 
   setLarge() {
-    document.execCommand('fontSize', false, '5');
-    this.emit();
-  }
-
-  insertQuote() {
-    document.execCommand('formatBlock', false, 'blockquote');
-    this.emit();
+    document.execCommand("fontSize", false, "5");
+    this.onInput();
   }
 
   insertLink() {
-    const url = prompt('Enter URL:');
-    if (url) {
-      document.execCommand('createLink', false, url);
-      this.emit();
-    }
+    const url = prompt("Enter URL:");
+    if (url) document.execCommand("createLink", false, url);
+    this.onInput();
   }
 
-  // toggleMoreMenu() {
-  //   this.showMoreMenu = !this.showMoreMenu;
-  // }
+  setColor(event: any) {
+    document.execCommand("foreColor", false, event.target.value);
+    this.onInput();
+  }
 
-  // clearFormatting() {
-  //   document.execCommand('removeFormat', false);
-  //   this.emit();
-  // }
+  undo() {
+    document.execCommand("undo");
+    this.onInput();
+  }
 
-  // insertHorizontalRule() {
-  //   document.execCommand('insertHorizontalRule');
-  //   this.emit();
-  // }
+  redo() {
+    document.execCommand("redo");
+    this.onInput();
+  }
 
-  // insertCodeBlock() {
-  //   const pre = document.createElement('pre');
-  //   pre.textContent = '/* code */';
-  //   pre.style.background = '#f4f4f4';
-  //   pre.style.padding = '10px';
-  //   pre.style.borderRadius = '6px';
-  //   this.insertNode(pre);
-  // }
+  clear() {
+    this.editor.nativeElement.innerHTML = "";
+    this.onInput();
+  }
 
-  // toggleTableGrid() {
-  //   this.showTableGrid = !this.showTableGrid;
-  // }
+  // -----------------------------
+  // CLOSE DROPDOWN WHEN CLICK OUTSIDE
+  // -----------------------------
+  @HostListener("document:click", ["$event"])
+  closeDropdown(event: MouseEvent) {
+    const target = event.target as HTMLElement;
 
-  // onHover(r: number, c: number) {
-  //   this.hoverRows = r;
-  //   this.hoverCols = c;
-  // }
-
-  // insertTable(rows: number, cols: number) {
-  //   let html = `<table class="rt-table">`;
-  //   for (let r = 0; r < rows; r++) {
-  //     html += '<tr>';
-  //     for (let c = 0; c < cols; c++) {
-  //       html += `<td>&nbsp;</td>`;
-  //     }
-  //     html += '</tr>';
-  //   }
-  //   html += '</table><br/>';
-
-  //   document.execCommand('insertHTML', false, html);
-  //   this.showTableGrid = false;
-  //   this.emit();
-  // }
-setColor(event: any) {
-  const color = event.target.value;
-  document.execCommand('foreColor', false, color);
-  this.emit();
-}
-
-  insertNode(node: HTMLElement) {
-    const sel = window.getSelection();
-    if (!sel?.rangeCount) {
-      this.editor.nativeElement.appendChild(node);
-      return;
+    if (!this.editor.nativeElement.contains(target)) {
+      this.showMention = false;
     }
-    const range = sel.getRangeAt(0);
-    range.deleteContents();
-    range.insertNode(node);
-    range.collapse(false);
-    sel.removeAllRanges();
-    sel.addRange(range);
-    this.emit();
   }
 }
