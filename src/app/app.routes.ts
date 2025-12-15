@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { TemplateListComponent } from '../template-list/template-list.component';
+import { TemplatePreviewComponent } from '../template-preview/template-preview.component';
 
 export const routes: Routes = [
     { path: '', redirectTo: 'templates', pathMatch: 'full' },
@@ -23,11 +24,10 @@ export const routes: Routes = [
                 .then(m => m.TemplateEditorComponent)
     },
 
+    // ✅ PREVIEW ROUTE (READ-ONLY PAGE)
     {
         path: 'templates/:id/preview',
-        loadComponent: () =>
-            import('../template-preview/template-preview.component')
-                .then(m => m.TemplatePreviewComponent)
+        component: TemplatePreviewComponent
     },
 
     { path: '**', redirectTo: 'templates' }

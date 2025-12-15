@@ -49,8 +49,8 @@ export class TemplateEditorComponent implements OnInit {
       this.editorContent = template.body || '';
 
       // IMPORTANT: DO NOT recreate formValues
-      this.template.formValues = template.formValues || {};
-
+      this.formValues = { ...(template.formValues || {}) };
+      this.template.formValues = this.formValues;
       // Ensure schema exists
       this.template.schema ||= { fields: [] };
 

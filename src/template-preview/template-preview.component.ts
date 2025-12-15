@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
-
-import { TemplateService, TemplateModel } from '../services/template.service';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TemplateService } from '../services/template.service';
 
 @Component({
   selector: 'app-template-preview',
@@ -13,46 +12,31 @@ import { TemplateService, TemplateModel } from '../services/template.service';
 })
 export class TemplatePreviewComponent implements OnInit {
 
-  template!: TemplateModel;
-  loading = true;
+  @Input() template: any;          // used in EDIT preview
+  @Input() showBackButton = false; // 🔥 control button visibility
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private ts: TemplateService
   ) { }
 
   ngOnInit(): void {
-    const id = this.route.snapshot.paramMap.get('id');
-
-    console.log('🔥 PREVIEW ID:', id);
-
-    if (!id) {
-      console.error('❌ ID not found in route');
-      this.loading = false;
-      return;
-    }
-
-    this.ts.getOne(id).subscribe({
-      next: data => {
-        console.log('✅ PREVIEW DATA:', data);
-        this.template = data;
-        this.loading = false;
-      },
-      error: err => {
-        console.error('❌ API ERROR', err);
-        this.loading = false;
+    // 🔥 ONLY load from API when used as ROUTE preview
+    if (!this.template) {
+      const id = this.route.snapshot.paramMap.get('id');
+      if (id) {
+        this.ts.getOne(id).subscribe(data => this.template = data);
+        this.showBackButton = true; // route preview
       }
-    });
+    }
   }
 
-  /**
-   * Extracts readable file name from URL
-   */
+  goBack(): void {
+    this.router.navigate(['/templates']);
+  }
+
   getFileName(url: string): string {
-    try {
-      return decodeURIComponent(url.split('/').pop() || url);
-    } catch {
-      return url;
-    }
+    return decodeURIComponent(url.split('/').pop() || url);
   }
 }

@@ -13,7 +13,7 @@
     {
       "id": "c5c7",
       "name": "Mahi",
-      "body": "<b><font size=\"5\">Hii</font></b>",
+      "body": "<font size=\"2\">Hii</font>",
       "schema": {
         "fields": [
           {
@@ -28,7 +28,7 @@
         "https://storage.example.com/Angular%20MOM.pdf"
       ],
       "formValues": {
-        "DOB": "2025-12-17"
+        "DOB": "2025-12-27"
       }
     },
     {
@@ -38,9 +38,21 @@
       "schema": {
         "fields": [
           {
+            "key": "Name",
+            "label": "Name",
+            "type": "text",
+            "required": true
+          },
+          {
             "key": "Age",
             "label": "Age",
             "type": "number",
+            "required": true
+          },
+          {
+            "key": "DOB",
+            "label": "DOB",
+            "type": "date",
             "required": true
           }
         ]
@@ -49,7 +61,9 @@
         "https://storage.example.com/Angular%20Route%20Guards%20.pptx"
       ],
       "formValues": {
-        "Age": 18
+        "Name": "vardhan",
+        "Age": 20,
+        "DOB": "2026-01-01"
       }
     }
   ]

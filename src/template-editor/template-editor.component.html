@@ -62,9 +62,10 @@
       </app-schema-builder>
     </div>
 
-    <!-- PREVIEW BELOW SCHEMA BUILDER -->
+    <!-- 🔥 INLINE PREVIEW (NO BACK BUTTON) -->
     <div class="preview-section" *ngIf="showPreview">
-      <app-template-preview [template]="template"></app-template-preview>
+      <app-template-preview [template]="template" [showBackButton]="false">
+      </app-template-preview>
     </div>
 
   </div>

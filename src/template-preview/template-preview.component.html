@@ -1,42 +1,32 @@
-<div class="preview-card">
+<!-- 🔥 BACK BUTTON (ONLY FOR ROUTE PREVIEW) -->
+<button class="back-btn" *ngIf="showBackButton" (click)="goBack()">
+  Back
+</button>
 
-  <!-- TITLE -->
+<div class="preview-card">
   <div class="preview-title">Preview</div>
 
-  <!-- NAME -->
   <div class="preview-row">
-    <div class="label">Name</div>
+    <div class="label"> Template Name</div>
     <div class="value">{{ template?.name }}</div>
   </div>
 
-  <!-- CONTENT -->
   <div class="preview-row">
     <div class="label">Content</div>
     <div class="value" [innerHTML]="template?.body"></div>
   </div>
 
-  <!-- 🔥 FORM DETAILS (DYNAMIC) -->
-  <ng-container *ngIf="template?.schema?.fields?.length">
-    <div class="preview-row" *ngFor="let field of template.schema.fields">
-      <div class="label">
-        {{ field.label }}
-        <span *ngIf="field.required" class="required">*</span>
-      </div>
+  <div class="preview-row" *ngFor="let key of (template?.formValues | keyvalue)">
+    <div class="label">{{ key.key }}</div>
+    <div class="value">{{ key.value }}</div>
+  </div>
 
-      <div class="value">
-        {{ template.formValues?.[field.key] ?? '—' }}
-      </div>
-    </div>
-  </ng-container>
-
-  <!-- ATTACHMENTS -->
   <div class="preview-row" *ngIf="template?.attachments?.length">
     <div class="label">File</div>
     <div class="value">
-      <a *ngFor="let file of template.attachments" [href]="file" target="_blank" style="display:block">
-        📎 {{ getFileName(file) }}
+      <a [href]="template.attachments[0]" target="_blank">
+        {{ getFileName(template.attachments[0]) }}
       </a>
     </div>
   </div>
-
 </div>
