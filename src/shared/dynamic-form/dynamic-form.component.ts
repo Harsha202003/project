@@ -11,14 +11,29 @@ import { FormsModule } from '@angular/forms';
 })
 export class DynamicFormComponent {
 
-  // Schema coming from parent (Template Editor)
   @Input() schema!: { fields: any[] };
-  @Input() formValues: any = {};
-  @Input() errors: any = {};
+  @Input() formValues: Record<string, any> = {};
+  @Input() errors: Record<string, string> = {};
+
   @Output() formValuesChange = new EventEmitter<any>();
 
+  updateValue(key: string, value: any) {
+    this.formValues[key] = value;
+    this.formValuesChange.emit({ ...this.formValues });
+  }
 
-  onValueChange() {
-    this.formValuesChange.emit(this.formValues);
+  updateMultiSelect(key: string, event: Event) {
+    const select = event.target as HTMLSelectElement;
+    const values = Array.from(select.selectedOptions).map(
+      option => option.value
+    );
+
+    this.formValues[key] = values;
+    this.formValuesChange.emit({ ...this.formValues });
+  }
+
+
+  toggleCheckbox(key: string, checked: boolean) {
+    this.updateValue(key, checked);
   }
 }

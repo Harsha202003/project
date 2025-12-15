@@ -11,11 +11,37 @@
             "label": "Name",
             "type": "text",
             "required": true
+          },
+          {
+            "key": "Address",
+            "label": "Address",
+            "type": "textarea",
+            "required": true
+          },
+          {
+            "key": "hhhhh",
+            "label": "hhhhhh",
+            "type": "multiselect",
+            "required": true,
+            "options": [
+              {
+                "label": "Option 1",
+                "value": "option1"
+              },
+              {
+                "label": "Option 2",
+                "value": "option2"
+              }
+            ]
           }
         ]
       },
       "formValues": {
-        "Name": "chintu"
+        "Name": "chintu",
+        "Address": "10-6-618",
+        "hhhhh": [
+          "option2"
+        ]
       },
       "attachments": []
     },
@@ -63,6 +89,22 @@
             "label": "DOB",
             "type": "date",
             "required": true
+          },
+          {
+            "key": "multi",
+            "label": "multi",
+            "type": "multiselect",
+            "required": true,
+            "options": [
+              {
+                "label": "Option 1",
+                "value": "option1"
+              },
+              {
+                "label": "Option 2",
+                "value": "option2"
+              }
+            ]
           }
         ]
       },
@@ -72,7 +114,10 @@
       "formValues": {
         "Name": "vardhan",
         "Age": 20,
-        "DOB": "2026-01-01"
+        "DOB": "2026-01-01",
+        "multi": [
+          "option1"
+        ]
       }
     },
     {

@@ -1,6 +1,14 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+
+export interface SchemaField {
+  key: string;
+  label: string;
+  type: 'text' | 'number' | 'date' | 'textarea' | 'checkbox' | 'multiselect';
+  required?: boolean;
+  options?: { label: string; value: any }[]; // for multiselect
+}
 
 @Component({
   selector: 'app-schema-builder',
@@ -11,27 +19,48 @@ import { FormsModule } from '@angular/forms';
 })
 export class SchemaBuilderComponent {
 
-  @Input() fields: any[] = [];
-  @Output() schemaChange = new EventEmitter<any[]>();
+  @Input() fields: SchemaField[] = [];
+  @Output() fieldsChange = new EventEmitter<SchemaField[]>();
 
-  newField = {
+  // Model for new field
+  newField: SchemaField = {
     key: '',
     label: '',
     type: 'text',
     required: false
   };
 
-  /** ADD FIELD */
-  addField() {
-    if (!this.newField.key.trim() || !this.newField.label.trim()) {
-      alert("Key and Label are required");
+  addField(): void {
+    if (!this.newField.key || !this.newField.label) {
+      alert('Key and Label are required');
       return;
     }
 
-    this.fields.push({ ...this.newField });
+    // Prevent duplicate keys
+    if (this.fields.some(f => f.key === this.newField.key)) {
+      alert('Field key must be unique');
+      return;
+    }
 
-    this.schemaChange.emit(this.fields);
+    const fieldToAdd: SchemaField = {
+      key: this.newField.key.trim(),
+      label: this.newField.label.trim(),
+      type: this.newField.type,
+      required: this.newField.required
+    };
 
+    // ✅ Multiselect default options
+    if (this.newField.type === 'multiselect') {
+      fieldToAdd.options = [
+        { label: 'Option 1', value: 'option1' },
+        { label: 'Option 2', value: 'option2' }
+      ];
+    }
+
+    this.fields = [...this.fields, fieldToAdd];
+    this.fieldsChange.emit(this.fields);
+
+    // Reset form
     this.newField = {
       key: '',
       label: '',
@@ -40,9 +69,9 @@ export class SchemaBuilderComponent {
     };
   }
 
-  /** REMOVE FIELD */
-  removeField(i: number) {
-    this.fields.splice(i, 1);
-    this.schemaChange.emit(this.fields);
+  removeField(index: number): void {
+    this.fields.splice(index, 1);
+    this.fields = [...this.fields];
+    this.fieldsChange.emit(this.fields);
   }
 }

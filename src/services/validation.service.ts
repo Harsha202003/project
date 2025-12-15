@@ -30,6 +30,34 @@ export class ValidationService {
                     errors[field.key] = `${field.label} must be a valid date`;
                 }
             }
+
+            // ✅ MULTIPLE CHECK
+            if (field.type === 'multiselect' && value) {
+                if (!Array.isArray(value) || value.length === 0) {
+                    errors[field.key] = `${field.label} must be a valid selection`;
+                }
+            }
+
+            // ✅ CHECKBOX CHECK
+            if (field.type === 'checkbox' && value) {
+                if (typeof value !== 'boolean') {
+                    errors[field.key] = `${field.label} must be a boolean`;
+                }
+            }
+
+            // ✅ TEXT CHECK
+            if (field.type === 'text' && value) {
+                if (typeof value !== 'string') {
+                    errors[field.key] = `${field.label} must be a string`;
+                }
+            }
+
+            // ✅ TEXTAREA CHECK
+            if (field.type === 'textarea' && value) {
+                if (typeof value !== 'string') {
+                    errors[field.key] = `${field.label} must be a string`;
+                }
+            }
         }
 
         return errors; // 🔥 only current errors
