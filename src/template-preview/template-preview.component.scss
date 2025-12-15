@@ -1,64 +1,93 @@
+/* PAGE BACKGROUND */
+:host {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 60px 20px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #eef2ff, #f8fafc);
+    font-family: "Inter", system-ui, -apple-system, BlinkMacSystemFont;
+}
+
+/* MAIN CARD */
 .preview-card {
-    height: 100%;
+    width: 100%;
+    max-width: 560px;
     background: #ffffff;
-    border-radius: 12px;
-    padding: 14px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.12);
-    overflow-y: auto;
+    border-radius: 16px;
+    padding: 28px 32px;
+    box-shadow:
+        0 25px 50px rgba(0, 0, 0, 0.08),
+        0 10px 20px rgba(79, 70, 229, 0.12);
+    animation: fadeIn 0.4s ease-in-out;
 }
 
-.preview-card h2 {
-    font-size: 16px;
-    font-weight: 600;
-    margin-bottom: 6px;
-}
-
-.preview-card h3 {
-    font-size: 14px;
+/* TITLE */
+.preview-title {
+    font-size: 24px;
+    font-weight: 700;
     color: #4f46e5;
-    margin-bottom: 10px;
+    margin-bottom: 22px;
+    border-bottom: 2px solid #e0e7ff;
+    padding-bottom: 10px;
 }
 
-.body {
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 10px;
-    margin-bottom: 14px;
+/* ROWS */
+.preview-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 20px;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dashed #e5e7eb;
+}
+
+.preview-row:last-child {
+    border-bottom: none;
+}
+
+/* LABEL */
+.label {
     font-size: 14px;
-}
-
-.attachments h4,
-.preview-card h4 {
-    font-size: 14px;
-    margin-bottom: 6px;
-}
-
-.attachments ul {
-    padding-left: 18px;
-}
-
-.attachments li {
-    font-size: 13px;
-}
-
-.form-preview {
-    margin-top: 16px;
-}
-
-.form-row {
-    display: inline-flex;
-    align-items: baseline;
-    gap: 6px;
-    /* 👈 controlled small gap */
-    margin-bottom: 6px;
-    font-size: 14px;
-}
-
-.form-row .label {
     font-weight: 600;
     color: #374151;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
 }
 
-.form-row .value {
+/* VALUE */
+.value {
+    font-size: 15px;
+    font-weight: 500;
     color: #111827;
+}
+
+/* CONTENT HIGHLIGHT */
+.value strong {
+    color: #1d4ed8;
+    font-weight: 700;
+}
+
+/* FILE LINK */
+.value a {
+    color: #4f46e5;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.value a:hover {
+    text-decoration: underline;
+}
+
+/* SUBTLE ENTRY ANIMATION */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

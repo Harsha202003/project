@@ -7,12 +7,7 @@
 
   <!-- Create New Template -->
   <div class="create-box">
-    <input
-      type="text"
-      placeholder="Enter template name"
-      [(ngModel)]="newTemplateName"
-      class="name-input"
-    />
+    <input type="text" placeholder="Enter template name" [(ngModel)]="newTemplateName" class="name-input" />
 
     <button class="create-btn" (click)="createNewTemplate()">Create</button>
     <button class="cancel-btn" (click)="cancelCreate()">Cancel</button>
@@ -26,6 +21,7 @@
       <div class="actions">
         <button class="edit" (click)="open(t)">Edit</button>
         <button class="delete" (click)="delete(t)">Delete</button>
+        <button class="edit" (click)="preview(t)">Preview</button>
       </div>
     </div>
   </div>

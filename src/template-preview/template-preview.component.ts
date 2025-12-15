@@ -1,5 +1,8 @@
-import { Component, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { ActivatedRoute } from '@angular/router';
+
+import { TemplateService, TemplateModel } from '../services/template.service';
 
 @Component({
   selector: 'app-template-preview',
@@ -8,16 +11,39 @@ import { CommonModule } from '@angular/common';
   templateUrl: './template-preview.component.html',
   styleUrls: ['./template-preview.component.scss']
 })
-export class TemplatePreviewComponent {
+export class TemplatePreviewComponent implements OnInit {
 
-  // Template object coming from Editor (already populated from API)
-  @Input() template!: {
-    name: string;
-    body: string;
-    schema?: { fields: any[] };
-    formValues?: Record<string, any>;
-    attachments?: string[];
-  };
+  template!: TemplateModel;
+  loading = true;
+
+  constructor(
+    private route: ActivatedRoute,
+    private ts: TemplateService
+  ) { }
+
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id');
+
+    console.log('🔥 PREVIEW ID:', id);
+
+    if (!id) {
+      console.error('❌ ID not found in route');
+      this.loading = false;
+      return;
+    }
+
+    this.ts.getOne(id).subscribe({
+      next: data => {
+        console.log('✅ PREVIEW DATA:', data);
+        this.template = data;
+        this.loading = false;
+      },
+      error: err => {
+        console.error('❌ API ERROR', err);
+        this.loading = false;
+      }
+    });
+  }
 
   /**
    * Extracts readable file name from URL

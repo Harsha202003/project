@@ -45,6 +45,9 @@ export class TemplateEditorComponent implements OnInit {
     this.ts.getOne(id).subscribe(template => {
       this.template = template;
 
+      // 🔥 CRITICAL: load body into editor
+      this.editorContent = template.body || '';
+
       // IMPORTANT: DO NOT recreate formValues
       this.template.formValues = template.formValues || {};
 

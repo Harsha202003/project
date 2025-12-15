@@ -16,7 +16,6 @@ import { RouterModule } from '@angular/router';
 export class TemplateListComponent implements OnInit, OnDestroy {
 
   templates: TemplateModel[] = [];
-
   newTemplateName = '';
 
   private destroy$ = new Subject<void>();
@@ -29,7 +28,9 @@ export class TemplateListComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.ts.list$
       .pipe(takeUntil(this.destroy$))
-      .subscribe(list => (this.templates = list));
+      .subscribe(list => {
+        this.templates = list;
+      });
 
     this.ts.loadList().subscribe();
   }
@@ -37,41 +38,48 @@ export class TemplateListComponent implements OnInit, OnDestroy {
   // CREATE TEMPLATE
   createNewTemplate() {
     if (!this.newTemplateName.trim()) {
-      alert("Please enter a template name.");
+      alert('Please enter a template name.');
       return;
     }
 
     const payload = {
       name: this.newTemplateName,
-      body: "",
+      body: '',
       schema: { fields: [] }
     };
 
-    this.ts.create(payload).subscribe((t) => {
-      this.newTemplateName = "";
+    this.ts.create(payload).subscribe(t => {
+      this.newTemplateName = '';
       this.router.navigate(['/templates', t.id, 'edit']);
     });
   }
 
-  // Clear input
   cancelCreate() {
-    this.newTemplateName = "";
+    this.newTemplateName = '';
   }
 
-  // Open editor
+  // EDIT TEMPLATE
   open(t: TemplateModel) {
     this.router.navigate(['/templates', t.id, 'edit']);
   }
 
-  // Delete template
+  // 🔥 PREVIEW TEMPLATE (READONLY)
+  preview(t: TemplateModel) {
+    if (!t?.id) {
+      console.error('❌ Template ID missing');
+      return;
+    }
+
+    this.router.navigate(['/templates', t.id, 'preview']);
+  }
+
+  // DELETE TEMPLATE
   delete(t: TemplateModel) {
     if (confirm(`Delete template "${t.name}"?`)) {
       this.ts.delete(t.id!).subscribe();
     }
   }
 
-
-  // Cleanup
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
