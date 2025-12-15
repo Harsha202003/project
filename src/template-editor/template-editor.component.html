@@ -1,42 +1,45 @@
+<!-- ================= HEADER ================= -->
 <div class="page-header">
+
+  <!-- TITLE -->
   <h1>{{ template?.name }}</h1>
 
+  <!-- ACTIONS (RIGHT SIDE) -->
   <div class="header-actions">
+    <button class="btn back" (click)="goBack()">Back</button>
     <button class="btn publish" (click)="publish()">Publish</button>
-    <button class="btn preview" (click)="preview()">Preview</button>
+    <button class="btn preview" (click)="togglePreview()">
+      {{ showPreview ? 'Close Preview' : 'Preview' }}
+    </button>
   </div>
+
 </div>
 
-<!-- <p class="sub-title">Edit template body, fields & attachments</p> -->
 
+<!-- ================= TOP LAYOUT ================= -->
 <div class="editor-layout">
-  
-  <!-- LEFT SIDE -->
+
+  <!-- LEFT COLUMN -->
   <div class="left-column">
+
+    <!-- TEMPLATE BODY -->
     <div class="card">
       <h3>Template Body</h3>
-
-      <app-rich-text
-        [(content)]="editorContent"
-        (contentChange)="onEditorChange($event)">
+      <app-rich-text [(content)]="editorContent" (contentChange)="onEditorChange($event)">
       </app-rich-text>
     </div>
-  </div>
 
-  <!-- RIGHT SIDE -->
-  <div class="right-column">
-
+    <!-- FORM FIELDS -->
     <div class="card">
       <h3>Form Fields</h3>
-      <app-dynamic-form
-        [schema]="template?.schema"
-        [(value)]="formValues">
+      <app-dynamic-form [schema]="template.schema" [(formValues)]="formValues"
+        (formValuesChange)="onFormValuesChange($event)">
       </app-dynamic-form>
     </div>
 
+    <!-- ATTACHMENTS -->
     <div class="card">
       <h3>Attachments</h3>
-
       <app-file-upload (uploaded)="onUploaded($event)"></app-file-upload>
 
       <ul class="attachment-list">
@@ -47,12 +50,21 @@
       </ul>
     </div>
 
+  </div>
+
+  <!-- RIGHT COLUMN -->
+  <div class="right-column">
+
+    <!-- SCHEMA BUILDER -->
     <div class="card">
       <h3>Schema Builder</h3>
-      <app-schema-builder
-        [fields]="template?.schema?.fields"
-        (fieldsChange)="onSchemaChange($event)">
+      <app-schema-builder [fields]="template?.schema?.fields" (fieldsChange)="onSchemaChange($event)">
       </app-schema-builder>
+    </div>
+
+    <!-- PREVIEW BELOW SCHEMA BUILDER -->
+    <div class="preview-section" *ngIf="showPreview">
+      <app-template-preview [template]="template"></app-template-preview>
     </div>
 
   </div>

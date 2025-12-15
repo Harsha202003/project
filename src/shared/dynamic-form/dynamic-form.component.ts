@@ -11,28 +11,13 @@ import { FormsModule } from '@angular/forms';
 })
 export class DynamicFormComponent {
 
-  @Input() schema: any = { fields: [] };
-  @Input() value: any = {};
+  // Schema coming from parent (Template Editor)
+  @Input() schema!: { fields: any[] };
+  @Input() formValues: any = {};
+  @Output() formValuesChange = new EventEmitter<any>();
 
-  @Output() valueChange = new EventEmitter<any>();
-
-  openDateKey: string | null = null;
 
   onValueChange() {
-    this.valueChange.emit(this.value);
-  }
-
-  openCalendar(key: string) {
-    this.openDateKey = key;
-  }
-
-  closeCalendar() {
-    this.openDateKey = null;
-  }
-
-  selectDate(key: string, event: any) {
-    this.value[key] = event.target.value;
-    this.closeCalendar();
-    this.onValueChange();
+    this.formValuesChange.emit(this.formValues);
   }
 }

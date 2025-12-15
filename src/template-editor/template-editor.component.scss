@@ -1,120 +1,242 @@
-/* PAGE WRAPPER */
+/* =======================
+   PAGE BASE
+   ======================= */
+
 :host {
     display: block;
-    padding: 40px;
-    background: #f4f6f9;
-    font-family: 'Inter', sans-serif;
+    background: #f6f7fb;
+    min-height: 100vh;
+    padding: 20px 24px;
+    box-sizing: border-box;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
 }
 
-/* ==============================
-   HEADER WITH BUTTONS
-============================== */
+/* =======================
+   HEADER
+   ======================= */
 
 .page-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding-bottom: 14px;
+    margin-bottom: 18px;
+    border-bottom: 1px solid #e5e7eb;
 }
 
 .page-header h1 {
-    margin: 0;
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 600;
+    color: #111827;
 }
 
+/* Right actions */
 .header-actions {
     display: flex;
     gap: 12px;
-    margin-bottom: 18px;
 }
 
-/* Buttons */
+/* =======================
+   BUTTONS
+   ======================= */
+
 .btn {
-    padding: 10px 24px;
-    border-radius: 6px;
-    font-size: 15px;
-    cursor: pointer;
+    padding: 8px 16px;
+    border-radius: 10px;
     border: none;
-    transition: 0.2s ease;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.btn.back {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+}
+
+.btn.back:hover {
+    background: #f3f4f6;
 }
 
 .btn.publish {
-    background: #4458ff;
-    color: white;
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #ffffff;
 }
 
 .btn.publish:hover {
-    background: #2f3fde;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(79, 70, 229, 0.25);
 }
 
 .btn.preview {
-    background: #fff;
-    border: 1px solid #d6d6d6;
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
 }
 
 .btn.preview:hover {
-    background: #f2f2f2;
+    background: #f9fafb;
 }
 
-/* Subtitle */
-.sub-title {
-    margin-top: 8px;
-    color: #6b7280;
-    margin-bottom: 25px;
-}
-
-/* ==============================
-   GRID LAYOUT
-============================== */
+/* =======================
+   MAIN LAYOUT
+   ======================= */
 
 .editor-layout {
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    gap: 32px;
+    grid-template-columns: 2.2fr 1.2fr;
+    gap: 20px;
+    align-items: start;
 }
 
-/* LEFT + RIGHT COLUMNS */
-.left-column,
+/* =======================
+   LEFT COLUMN
+   ======================= */
+
+.left-column {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+}
+
+/* =======================
+   RIGHT COLUMN
+   ======================= */
+
 .right-column {
     display: flex;
     flex-direction: column;
-    gap: 24px;
+    gap: 18px;
 }
 
-/* Cards */
+/* =======================
+   CARD
+   ======================= */
+
 .card {
-    background: white;
-    padding: 22px;
-    border-radius: 12px;
-    border: 1px solid #e5e7eb;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow:
+        0 10px 25px rgba(0, 0, 0, 0.06),
+        0 4px 10px rgba(0, 0, 0, 0.04);
 }
 
 .card h3 {
-    margin-bottom: 16px;
-    font-size: 18px;
+    font-size: 15px;
     font-weight: 600;
+    color: #111827;
+    margin-bottom: 14px;
 }
 
-/* Attachments list */
+/* =======================
+   TEMPLATE BODY (EDITOR)
+   ======================= */
+
+app-rich-text {
+    display: block;
+    min-height: 260px;
+}
+
+/* =======================
+   SCHEMA BUILDER EMPHASIS
+   ======================= */
+
+// .right-column .card {
+// //   border-left: 4px solid #6366f1;
+// }
+
+/* =======================
+   PREVIEW SECTION
+   ======================= */
+
+.preview-section {
+    background: linear-gradient(180deg, #ffffff, #f9fafb);
+    border-radius: 16px;
+    padding: 18px;
+    box-shadow:
+        inset 0 0 0 1px #e5e7eb,
+        0 12px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* =======================
+   FORM FIELDS
+   ======================= */
+
+app-dynamic-form {
+    display: block;
+}
+
+/* =======================
+   ATTACHMENTS
+   ======================= */
+
 .attachment-list {
-    margin-top: 12px;
-    padding: 0;
     list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
 }
 
 .attachment-list li {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 6px;
-    border-bottom: 1px dashed #ddd;
-    margin-bottom: 8px;
+    align-items: center;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 13px;
+    background: #f9fafb;
+    margin-bottom: 6px;
 }
 
-.remove {
+.attachment-list li:hover {
+    background: #f3f4f6;
+}
+
+.attachment-list a {
+    color: #2563eb;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.attachment-list a:hover {
+    text-decoration: underline;
+}
+
+.attachment-list .remove {
     background: none;
     border: none;
-    color: #d13232;
     cursor: pointer;
-    font-size: 16px;
+    color: #ef4444;
+    font-size: 14px;
+}
+
+/* =======================
+   SCROLL POLISH
+   ======================= */
+
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 6px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+/* =======================
+   RESPONSIVE
+   ======================= */
+
+@media (max-width: 1100px) {
+    .editor-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .right-column {
+        order: 2;
+    }
 }

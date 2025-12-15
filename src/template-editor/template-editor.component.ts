@@ -1,13 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 
 import { TemplateService, TemplateModel } from '../services/template.service';
+import { RichTextComponent } from '../shared/rich-text/rich-text.component';
+import { DynamicFormComponent } from '../shared/dynamic-form/dynamic-form.component';
 import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
 import { SchemaBuilderComponent } from '../shared/schema-builder/schema-builder.component';
-import { DynamicFormComponent } from "../shared/dynamic-form/dynamic-form.component";
-import { RichTextComponent } from '../shared/rich-text/rich-text.component';
+import { TemplatePreviewComponent } from '../template-preview/template-preview.component';
 
 @Component({
   selector: 'app-template-editor',
@@ -18,80 +19,101 @@ import { RichTextComponent } from '../shared/rich-text/rich-text.component';
     CommonModule,
     FormsModule,
     RichTextComponent,
+    DynamicFormComponent,
     FileUploadComponent,
     SchemaBuilderComponent,
-    DynamicFormComponent
-  ],
+    TemplatePreviewComponent
+  ]
 })
 export class TemplateEditorComponent implements OnInit {
 
   template!: TemplateModel;
+
   editorContent = '';
   formValues: any = {};
+  showPreview = false;
   loading = true;
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private ts: TemplateService
   ) { }
 
-  ngOnInit() {
-    const id = this.route.snapshot.paramMap.get("id")!;
+  ngOnInit(): void {
+    const id = this.route.snapshot.paramMap.get('id')!;
 
-    this.ts.getOne(id).subscribe(t => {
-      this.template = t;
+    this.ts.getOne(id).subscribe(template => {
+      this.template = template;
 
-      // Load body
-      this.editorContent = t.body || '';
+      // Body
+      this.editorContent = template.body || '';
 
-      // Load form values
-      this.formValues = { ...t.formValues };
-
-      // Ensure required structure exists
+      // Schema
       this.template.schema ||= { fields: [] };
-      this.template.attachments ||= [];
 
-      // Clean old formValues based on current fields
-      this.cleanFormValues();
+      // Form values
+      this.formValues = { ...(template.formValues || {}) };
+
+      // Ensure all schema keys exist
+      this.template.schema.fields.forEach(field => {
+        if (!(field.key in this.formValues)) {
+          this.formValues[field.key] = '';
+        }
+      });
+
+      // Attachments
+      this.template.attachments ||= [];
 
       this.loading = false;
     });
   }
 
-  // When editor updates text
-  onEditorChange(html: string) {
+  /* ================= HEADER ================= */
+
+  goBack(): void {
+    window.history.back();
+  }
+
+  togglePreview(): void {
+    this.showPreview = !this.showPreview;
+  }
+
+  /* ================= EDITOR ================= */
+
+  onEditorChange(html: string): void {
     this.editorContent = html;
     this.template.body = html;
   }
 
-  // Save template
-  publish() {
-    // Clean form values BEFORE saving
+  /* ================= FORM ================= */
+
+  onFormValuesChange(values: any): void {
+    this.formValues = values;
+    this.template.formValues = values;
+  }
+
+  /* ================= SCHEMA ================= */
+
+  onSchemaChange(fields: any[]): void {
+    this.template.schema.fields = [...fields];
     this.cleanFormValues();
+  }
 
-    const updated = {
-      ...this.template,
-      body: this.editorContent,
-      formValues: this.formValues,
-      attachments: this.template.attachments
-    };
+  private cleanFormValues(): void {
+    const allowedKeys = this.template.schema.fields.map(f => f.key);
 
-    this.ts.updateTemplate(this.template.id, updated).subscribe(() => {
-      alert("Template updated successfully!");
+    Object.keys(this.formValues).forEach(key => {
+      if (!allowedKeys.includes(key)) {
+        delete this.formValues[key];
+      }
     });
+
+    this.template.formValues = this.formValues;
   }
 
-  // Open preview
-  preview() {
-    this.router.navigate(
-      ['/templates', this.template.id, 'preview'],
-      { state: { template: this.template } }
-    );
-  }
+  /* ================= ATTACHMENTS ================= */
 
-  // File upload
-  onUploaded(url: string) {
+  onUploaded(url: string): void {
     this.template.attachments.push(url);
 
     this.ts.updateTemplate(this.template.id, {
@@ -99,33 +121,29 @@ export class TemplateEditorComponent implements OnInit {
     }).subscribe();
   }
 
-  // Remove file
-  removeAttachment(url: string) {
-    this.template.attachments = this.template.attachments.filter((a: string) => a !== url);
+  removeAttachment(url: string): void {
+    this.template.attachments =
+      this.template.attachments.filter((a: string) => a !== url);
 
     this.ts.updateTemplate(this.template.id, {
       attachments: this.template.attachments
     }).subscribe();
   }
 
-  // Called when schema builder updates fields
-  onSchemaChange(fields: any[]) {
-    this.template.schema.fields = [...fields];
+  /* ================= SAVE ================= */
 
-    // Remove values of deleted fields
+  publish(): void {
     this.cleanFormValues();
-  }
 
-  // IMPORTANT — removes old values that no longer exist in schema
-  cleanFormValues() {
-    if (!this.template?.schema?.fields) return;
+    const updated: TemplateModel = {
+      ...this.template,
+      body: this.editorContent,
+      formValues: this.formValues,
+      attachments: this.template.attachments
+    };
 
-    const allowedKeys = this.template.schema.fields.map(f => f.key);
-
-    Object.keys(this.formValues).forEach(key => {
-      if (!allowedKeys.includes(key)) {
-        delete this.formValues[key];
-      }
+    this.ts.updateTemplate(this.template.id, updated).subscribe(() => {
+      alert('Template updated successfully!');
     });
   }
 }

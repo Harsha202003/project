@@ -1,40 +1,9 @@
 {
   "templates": [
     {
-      "id": "0ca5",
-      "name": "Nikitha",
-      "body": "<br>",
-      "schema": {
-        "fields": [
-          {
-            "key": "Company",
-            "label": "Brand",
-            "type": "text",
-            "required": true
-          }
-        ]
-      },
-      "attachments": [],
-      "formValues": {
-        "Company": "tech.at.core"
-      }
-    },
-    {
-      "id": "9443",
-      "name": "keerthana",
-      "body": "Hello World",
-      "schema": {
-        "fields": []
-      },
-      "formValues": {
-        "sh": "2025-12-02"
-      },
-      "attachments": []
-    },
-    {
-      "id": "8682",
-      "name": "Govind",
-      "body": "Harsha Hello World",
+      "id": "b56c",
+      "name": "Harsha",
+      "body": "Hello@nikitha ",
       "schema": {
         "fields": []
       },
@@ -42,30 +11,9 @@
       "formValues": {}
     },
     {
-      "id": "f2a9",
-      "name": "Ajay",
-      "body": "",
-      "schema": {
-        "fields": [
-          {
-            "key": "dfg",
-            "label": "ghj",
-            "type": "text",
-            "required": true
-          }
-        ]
-      },
-      "attachments": [
-        "https://storage.example.com/Task-6%20(Frontend).docx"
-      ],
-      "formValues": {
-        "dfg": "503001"
-      }
-    },
-    {
-      "id": "2acb",
-      "name": "sdfghjk",
-      "body": "",
+      "id": "a05d",
+      "name": "Govind",
+      "body": "Hii @nithish ",
       "schema": {
         "fields": []
       },

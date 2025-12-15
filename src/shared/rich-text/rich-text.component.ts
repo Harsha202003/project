@@ -5,7 +5,10 @@ import {
   EventEmitter,
   ViewChild,
   ElementRef,
-  HostListener
+  HostListener,
+  OnChanges,
+  SimpleChanges,
+  AfterViewInit
 } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
@@ -16,158 +19,166 @@ import { CommonModule } from '@angular/common';
   templateUrl: './rich-text.component.html',
   styleUrls: ['./rich-text.component.scss']
 })
-export class RichTextComponent {
+export class RichTextComponent
+  implements OnChanges, AfterViewInit {
 
   @Input() content = '';
   @Output() contentChange = new EventEmitter<string>();
 
   @ViewChild('editor') editor!: ElementRef<HTMLDivElement>;
 
-  // -----------------------------
-  // MENTION SYSTEM
-  // -----------------------------
-  allUsers = ["nithish", "nikitha", "keerthana", "govind", "ajay"];
-  filteredUsers: string[] = [];
+  private isInternalChange = false;
+  private viewInitialized = false;
 
+  // 🔹 RUNS AFTER DOM IS READY (THIS WAS MISSING)
+  ngAfterViewInit() {
+    this.viewInitialized = true;
+    this.setEditorContent(this.content);
+  }
+
+  // 🔹 RUNS WHEN INPUT CHANGES (API / ROUTE CHANGE)
+  ngOnChanges(changes: SimpleChanges) {
+    if (
+      changes['content'] &&
+      this.viewInitialized &&
+      !this.isInternalChange
+    ) {
+      this.setEditorContent(changes['content'].currentValue);
+    }
+  }
+
+  // 🔹 SINGLE SAFE DOM WRITE METHOD
+  private setEditorContent(html: string) {
+    const value = html || '';
+
+    if (this.editor.nativeElement.innerHTML !== value) {
+      this.editor.nativeElement.innerHTML = value;
+    }
+  }
+
+  // =============================
+  // USER INPUT
+  // =============================
+  onInput() {
+    this.isInternalChange = true;
+
+    const html = this.editor.nativeElement.innerHTML;
+    this.contentChange.emit(html);
+
+    this.isInternalChange = false;
+  }
+
+  // =============================
+  // MENTION SYSTEM
+  // =============================
+  allUsers = [
+    'nithish', 'nikitha', 'keerthana',
+    'govind', 'ajay', 'mahi',
+    'nuthan', 'panidhar'
+  ];
+
+  filteredUsers: string[] = [];
   showMention = false;
-  typed = "";
+  typed = '';
   mentionX = 0;
   mentionY = 0;
   activeIndex = 0;
 
-  // -----------------------------
-  // BASE EDITOR INPUT
-  // -----------------------------
-  onInput() {
-    this.content = this.editor.nativeElement.innerHTML;
-    this.contentChange.emit(this.content);
-  }
-
-  // -----------------------------
-  // KEY LISTENING FOR @
-  // -----------------------------
   onKeyUp(event: KeyboardEvent) {
     const sel = window.getSelection();
     if (!sel || !sel.anchorNode) return;
 
-    const text = sel.anchorNode.textContent || "";
-
-    // Detect @mentions
+    const text = sel.anchorNode.textContent || '';
     const match = text.match(/@([a-zA-Z0-9]*)$/);
 
     if (match) {
       this.typed = match[1];
-
-      // Filter list
       this.filteredUsers = this.allUsers.filter(u =>
         u.toLowerCase().startsWith(this.typed.toLowerCase())
       );
-
-      if (this.filteredUsers.length > 0) {
-        this.showMention = true;
-        this.positionMentionDropdown();
-      } else {
-        this.showMention = false;
-      }
+      this.showMention = this.filteredUsers.length > 0;
+      if (this.showMention) this.positionMentionDropdown();
     } else {
       this.showMention = false;
     }
 
-    // ENTER → Choose active mention
-    if (event.key === "Enter" && this.showMention) {
+    if (event.key === 'Enter' && this.showMention) {
       event.preventDefault();
       this.selectMention(this.filteredUsers[this.activeIndex]);
     }
   }
 
-  // -----------------------------
-  // POSITION DROPDOWN
-  // -----------------------------
   positionMentionDropdown() {
     const sel = window.getSelection();
-    if (!sel || sel.rangeCount === 0) return;
+    if (!sel || !sel.rangeCount) return;
 
-    const range = sel.getRangeAt(0).cloneRange();
-    range.collapse(true);
-    const rect = range.getBoundingClientRect();
-
-    if (rect) {
-      this.mentionX = rect.left;
-      this.mentionY = rect.bottom + window.scrollY + 8;
-    }
+    const rect = sel.getRangeAt(0).getBoundingClientRect();
+    this.mentionX = rect.left;
+    this.mentionY = rect.bottom + window.scrollY + 8;
   }
 
-  // -----------------------------
-  // INSERT MENTION
-  // -----------------------------
   selectMention(name: string) {
     const sel = window.getSelection();
     if (!sel || !sel.anchorNode) return;
 
     const node = sel.anchorNode;
-    const text = node.textContent || "";
-
-    // Replace @typed with @name
-    node.textContent = text.replace(/@([a-zA-Z0-9]*)$/, `@${name} `);
+    node.textContent = (node.textContent || '')
+      .replace(/@([a-zA-Z0-9]*)$/, `@${name} `);
 
     this.showMention = false;
-
-    this.content = this.editor.nativeElement.innerHTML;
-    this.contentChange.emit(this.content);
+    this.onInput();
   }
 
-  // -----------------------------
-  // TOOLBAR COMMANDS
-  // -----------------------------
+  // =============================
+  // TOOLBAR
+  // =============================
   exec(cmd: string) {
     document.execCommand(cmd, false);
     this.onInput();
   }
 
   setSmall() {
-    document.execCommand("fontSize", false, "2");
+    document.execCommand('fontSize', false, '2');
     this.onInput();
   }
 
   setLarge() {
-    document.execCommand("fontSize", false, "5");
+    document.execCommand('fontSize', false, '5');
     this.onInput();
   }
 
   insertLink() {
-    const url = prompt("Enter URL:");
-    if (url) document.execCommand("createLink", false, url);
+    const url = prompt('Enter URL:');
+    if (url) document.execCommand('createLink', false, url);
     this.onInput();
   }
 
   setColor(event: any) {
-    document.execCommand("foreColor", false, event.target.value);
+    document.execCommand('foreColor', false, event.target.value);
     this.onInput();
   }
 
   undo() {
-    document.execCommand("undo");
+    document.execCommand('undo');
     this.onInput();
   }
 
   redo() {
-    document.execCommand("redo");
+    document.execCommand('redo');
     this.onInput();
   }
 
   clear() {
-    this.editor.nativeElement.innerHTML = "";
+    this.setEditorContent('');
     this.onInput();
   }
 
-  // -----------------------------
-  // CLOSE DROPDOWN WHEN CLICK OUTSIDE
-  // -----------------------------
-  @HostListener("document:click", ["$event"])
+  // =============================
+  // CLOSE DROPDOWN
+  // =============================
+  @HostListener('document:click', ['$event'])
   closeDropdown(event: MouseEvent) {
-    const target = event.target as HTMLElement;
-
-    if (!this.editor.nativeElement.contains(target)) {
+    if (!this.editor.nativeElement.contains(event.target as HTMLElement)) {
       this.showMention = false;
     }
   }

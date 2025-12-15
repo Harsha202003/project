@@ -1,31 +1,29 @@
-<div class="preview-page">
+<div class="preview-card">
 
   <h2>Template Preview</h2>
 
-  <div *ngIf="loading" class="loading">
-    Loading preview…
+  <!-- Template Name -->
+  <h3>{{ template.name }}</h3>
+
+  <!-- Body -->
+  <div class="body" [innerHTML]="template.body"></div>
+
+  <!-- Attachments -->
+  <div *ngIf="template.attachments?.length" class="attachments">
+    <h4>Attachments</h4>
+    <ul>
+      <li *ngFor="let file of template.attachments">
+        <a [href]="file.url" target="_blank">{{ file.name }}</a>
+      </li>
+    </ul>
   </div>
 
-  <div *ngIf="!loading">
+  <!-- Form Preview -->
+  <div *ngIf="template.schema?.fields?.length">
+    <h4>Form Preview</h4>
 
-    <!-- Template Title -->
-    <h3>{{ template.name }}</h3>
-
-    <!-- Render Template Body -->
-    <div class="body" [innerHTML]="template.body"></div>
-
-    <hr>
-
-    <!-- Render Dynamic Form -->
-    <div *ngIf="template.schema?.fields?.length > 0">
-      <h4>Form Preview</h4>
-
-      <app-dynamic-form
-        [schema]="template.schema"
-        [(value)]="template.formValues">
-      </app-dynamic-form>
-    </div>
-
+    <app-dynamic-form [schema]="template.schema" [value]="template.formValues">
+    </app-dynamic-form>
   </div>
 
 </div>
