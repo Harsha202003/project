@@ -2,28 +2,22 @@
 
   <h2>Template Preview</h2>
 
-  <!-- Template Name -->
   <h3>{{ template.name }}</h3>
 
-  <!-- Body -->
+  <!-- BODY -->
   <div class="body" [innerHTML]="template.body"></div>
 
-  <!-- Attachments -->
+  <!-- ATTACHMENTS -->
   <div *ngIf="template.attachments?.length" class="attachments">
     <h4>Attachments</h4>
+
     <ul>
       <li *ngFor="let file of template.attachments">
-        <a [href]="file.url" target="_blank">{{ file.name }}</a>
+        <a [href]="file" target="_blank">
+          📎 {{ getFileName(file) }}
+        </a>
       </li>
     </ul>
-  </div>
-
-  <!-- Form Preview -->
-  <div *ngIf="template.schema?.fields?.length">
-    <h4>Form Preview</h4>
-
-    <app-dynamic-form [schema]="template.schema" [value]="template.formValues">
-    </app-dynamic-form>
   </div>
 
 </div>

@@ -7,7 +7,9 @@
       "schema": {
         "fields": []
       },
-      "attachments": [],
+      "attachments": [
+        "https://storage.example.com/Angular%20MOM.pdf"
+      ],
       "formValues": {}
     },
     {

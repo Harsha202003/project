@@ -12,4 +12,12 @@ import { TemplateModel } from '../services/template.service';
 })
 export class TemplatePreviewComponent {
   @Input() template!: TemplateModel;
+  getFileName(url: string): string {
+    try {
+      return decodeURIComponent(url.split('/').pop() || url);
+    } catch {
+      return url;
+    }
+  }
+
 }
