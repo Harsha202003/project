@@ -40,3 +40,25 @@
 .attachments li {
     font-size: 13px;
 }
+
+.form-preview {
+    margin-top: 16px;
+}
+
+.form-row {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 6px;
+    /* 👈 controlled small gap */
+    margin-bottom: 6px;
+    font-size: 14px;
+}
+
+.form-row .label {
+    font-weight: 600;
+    color: #374151;
+}
+
+.form-row .value {
+    color: #111827;
+}

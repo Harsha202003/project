@@ -7,6 +7,22 @@
   <!-- BODY -->
   <div class="body" [innerHTML]="template.body"></div>
 
+  <!-- 🔥 FORM DATA PREVIEW -->
+  <div *ngIf="template.schema?.fields?.length" class="form-preview">
+    <h4>Form Details</h4>
+
+    <div class="form-row" *ngFor="let field of template.schema.fields">
+      <span class="label">
+        {{ field.label }}:
+      </span>
+
+      <span class="value">
+        {{ template.formValues?.[field.key] ?? '—' }}
+      </span>
+    </div>
+  </div>
+
+
   <!-- ATTACHMENTS -->
   <div *ngIf="template.attachments?.length" class="attachments">
     <h4>Attachments</h4>

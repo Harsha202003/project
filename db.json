@@ -1,26 +1,21 @@
 {
   "templates": [
     {
-      "id": "b56c",
+      "id": "26b5",
       "name": "Harsha",
-      "body": "Hello@nikitha ",
+      "body": "Hello @govind ",
       "schema": {
-        "fields": []
+        "fields": [
+          {
+            "key": "Name",
+            "label": "Name",
+            "type": "text",
+            "required": false
+          }
+        ]
       },
-      "attachments": [
-        "https://storage.example.com/Angular%20MOM.pdf"
-      ],
-      "formValues": {}
-    },
-    {
-      "id": "a05d",
-      "name": "Govind",
-      "body": "Hii @nithish ",
-      "schema": {
-        "fields": []
-      },
-      "attachments": [],
-      "formValues": {}
+      "formValues": {},
+      "attachments": []
     }
   ]
 }

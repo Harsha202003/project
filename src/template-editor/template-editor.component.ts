@@ -45,28 +45,17 @@ export class TemplateEditorComponent implements OnInit {
     this.ts.getOne(id).subscribe(template => {
       this.template = template;
 
-      // Body
-      this.editorContent = template.body || '';
+      // IMPORTANT: DO NOT recreate formValues
+      this.template.formValues = template.formValues || {};
 
-      // Schema
+      // Ensure schema exists
       this.template.schema ||= { fields: [] };
 
-      // Form values
-      this.formValues = { ...(template.formValues || {}) };
-
-      // Ensure all schema keys exist
-      this.template.schema.fields.forEach(field => {
-        if (!(field.key in this.formValues)) {
-          this.formValues[field.key] = '';
-        }
-      });
-
-      // Attachments
+      // Ensure attachments
       this.template.attachments ||= [];
-
-      this.loading = false;
     });
   }
+
 
   /* ================= HEADER ================= */
 
