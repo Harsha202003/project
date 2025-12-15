@@ -19,6 +19,11 @@
 
     <!-- DATE -->
     <input *ngIf="field.type === 'date'" type="date" [(ngModel)]="formValues[field.key]" [required]="field.required" />
+
+    <!-- ERROR MESSAGE -->
+    <div class="error-message" *ngIf="errors[field.key]" style="color: red; font-size: 12px; margin-top: 4px;">
+      {{ errors[field.key] }}
+    </div>
   </div>
 
 

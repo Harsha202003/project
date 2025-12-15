@@ -32,9 +32,11 @@
     <!-- FORM FIELDS -->
     <div class="card">
       <h3>Form Fields</h3>
-      <app-dynamic-form [schema]="template.schema" [(formValues)]="formValues"
+      <app-dynamic-form [schema]="template.schema" [(formValues)]="formValues" [errors]="errors"
         (formValuesChange)="onFormValuesChange($event)">
       </app-dynamic-form>
+
+
     </div>
 
     <!-- ATTACHMENTS -->

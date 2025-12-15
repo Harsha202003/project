@@ -5,9 +5,18 @@
       "name": "Harsha",
       "body": "<b>Hello</b>",
       "schema": {
-        "fields": []
+        "fields": [
+          {
+            "key": "Name",
+            "label": "Name",
+            "type": "text",
+            "required": true
+          }
+        ]
       },
-      "formValues": {},
+      "formValues": {
+        "Name": "chintu"
+      },
       "attachments": []
     },
     {
@@ -65,6 +74,25 @@
         "Age": 20,
         "DOB": "2026-01-01"
       }
+    },
+    {
+      "id": "dcc0",
+      "name": "Govind",
+      "body": "Hi@keerthana ",
+      "schema": {
+        "fields": [
+          {
+            "key": "Name",
+            "label": "Name",
+            "type": "text",
+            "required": true
+          }
+        ]
+      },
+      "formValues": {
+        "Name": "Vardhan"
+      },
+      "attachments": []
     }
   ]
 }

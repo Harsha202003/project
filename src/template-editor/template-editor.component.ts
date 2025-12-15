@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 
 import { TemplateService, TemplateModel } from '../services/template.service';
+import { ValidationService } from '../services/validation.service';
+
 import { RichTextComponent } from '../shared/rich-text/rich-text.component';
 import { DynamicFormComponent } from '../shared/dynamic-form/dynamic-form.component';
 import { FileUploadComponent } from '../shared/file-upload/file-upload.component';
@@ -31,12 +33,17 @@ export class TemplateEditorComponent implements OnInit {
 
   editorContent = '';
   formValues: any = {};
+
+  // ✅ VALIDATION STATE
+  errors: Record<string, string> = {};
+
   showPreview = false;
   loading = true;
 
   constructor(
     private route: ActivatedRoute,
-    private ts: TemplateService
+    private ts: TemplateService,
+    private validation: ValidationService   // ✅ injected correctly
   ) { }
 
   ngOnInit(): void {
@@ -45,20 +52,26 @@ export class TemplateEditorComponent implements OnInit {
     this.ts.getOne(id).subscribe(template => {
       this.template = template;
 
-      // 🔥 CRITICAL: load body into editor
+      // Load body into editor
       this.editorContent = template.body || '';
 
-      // IMPORTANT: DO NOT recreate formValues
+      // Preserve saved form values
       this.formValues = { ...(template.formValues || {}) };
       this.template.formValues = this.formValues;
-      // Ensure schema exists
-      this.template.schema ||= { fields: [] };
 
-      // Ensure attachments
+      // Ensure schema & attachments exist
+      this.template.schema ||= { fields: [] };
       this.template.attachments ||= [];
+
+      // ✅ INITIAL VALIDATION (important for edit mode)
+      this.errors = this.validation.validate(
+        this.template.schema.fields,
+        this.formValues
+      );
+
+      this.loading = false;
     });
   }
-
 
   /* ================= HEADER ================= */
 
@@ -82,6 +95,12 @@ export class TemplateEditorComponent implements OnInit {
   onFormValuesChange(values: any): void {
     this.formValues = values;
     this.template.formValues = values;
+
+    // 🔥 REVALIDATE ON EVERY CHANGE
+    this.errors = this.validation.validate(
+      this.template.schema.fields,
+      this.formValues
+    );
   }
 
   /* ================= SCHEMA ================= */
@@ -89,6 +108,12 @@ export class TemplateEditorComponent implements OnInit {
   onSchemaChange(fields: any[]): void {
     this.template.schema.fields = [...fields];
     this.cleanFormValues();
+
+    // Re-validate after schema change
+    this.errors = this.validation.validate(
+      this.template.schema.fields,
+      this.formValues
+    );
   }
 
   private cleanFormValues(): void {
@@ -125,7 +150,16 @@ export class TemplateEditorComponent implements OnInit {
   /* ================= SAVE ================= */
 
   publish(): void {
-    this.cleanFormValues();
+    // 🔒 FINAL VALIDATION CHECK
+    this.errors = this.validation.validate(
+      this.template.schema.fields,
+      this.formValues
+    );
+
+    if (Object.keys(this.errors).length > 0) {
+      alert('Please fix validation errors before publishing.');
+      return;
+    }
 
     const updated: TemplateModel = {
       ...this.template,

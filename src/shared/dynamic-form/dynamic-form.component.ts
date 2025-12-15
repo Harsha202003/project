@@ -14,6 +14,7 @@ export class DynamicFormComponent {
   // Schema coming from parent (Template Editor)
   @Input() schema!: { fields: any[] };
   @Input() formValues: any = {};
+  @Input() errors: any = {};
   @Output() formValuesChange = new EventEmitter<any>();
 
 
