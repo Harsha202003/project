@@ -53,6 +53,7 @@
 .btn.back {
     background: #ffffff;
     border: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #bcbcc6, #cdccd7);
 }
 
 .btn.back:hover {
@@ -72,10 +73,12 @@
 .btn.preview {
     background: #ffffff;
     border: 1px solid #e5e7eb;
+    background: linear-gradient(135deg, #de9e5e, #f99766);
 }
 
 .btn.preview:hover {
-    background: #f9fafb;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(249, 151, 102, 0.25);
 }
 
 /* =======================
@@ -142,9 +145,9 @@ app-rich-text {
    SCHEMA BUILDER EMPHASIS
    ======================= */
 
-// .right-column .card {
-// //   border-left: 4px solid #6366f1;
-// }
+.right-column .card {
+    border-left: 4px solid #6366f1;
+}
 
 /* =======================
    PREVIEW SECTION

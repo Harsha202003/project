@@ -3,7 +3,7 @@
     {
       "id": "26b5",
       "name": "Harsha",
-      "body": "<b>Hello</b>",
+      "body": "Hello",
       "schema": {
         "fields": [
           {
@@ -11,37 +11,11 @@
             "label": "Name",
             "type": "text",
             "required": true
-          },
-          {
-            "key": "Address",
-            "label": "Address",
-            "type": "textarea",
-            "required": true
-          },
-          {
-            "key": "hhhhh",
-            "label": "hhhhhh",
-            "type": "multiselect",
-            "required": true,
-            "options": [
-              {
-                "label": "Option 1",
-                "value": "option1"
-              },
-              {
-                "label": "Option 2",
-                "value": "option2"
-              }
-            ]
           }
         ]
       },
       "formValues": {
-        "Name": "chintu",
-        "Address": "10-6-618",
-        "hhhhh": [
-          "option2"
-        ]
+        "Name": "Vardhan"
       },
       "attachments": []
     },
@@ -56,14 +30,19 @@
             "label": "DOB",
             "type": "date",
             "required": true
+          },
+          {
+            "key": "Name",
+            "label": "Name",
+            "type": "text",
+            "required": true
           }
         ]
       },
-      "attachments": [
-        "https://storage.example.com/Angular%20MOM.pdf"
-      ],
+      "attachments": [],
       "formValues": {
-        "DOB": "2025-12-27"
+        "DOB": "2025-12-27",
+        "Name": "chinna"
       }
     },
     {
@@ -119,25 +98,6 @@
           "option1"
         ]
       }
-    },
-    {
-      "id": "dcc0",
-      "name": "Govind",
-      "body": "Hi@keerthana ",
-      "schema": {
-        "fields": [
-          {
-            "key": "Name",
-            "label": "Name",
-            "type": "text",
-            "required": true
-          }
-        ]
-      },
-      "formValues": {
-        "Name": "Vardhan"
-      },
-      "attachments": []
     }
   ]
 }
