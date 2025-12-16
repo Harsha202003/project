@@ -1,19 +1,45 @@
 <!-- ================= HEADER ================= -->
 <div class="page-header">
 
-  <!-- TITLE -->
-  <h1>{{ template?.name }}</h1>
+  <!-- LEFT: TITLE / INPUT -->
+  <div class="title-area">
 
-  <!-- ACTIONS (RIGHT SIDE) -->
+    <!-- VIEW MODE -->
+    <h1 *ngIf="!editingName" class="template-title">
+      {{ template?.name }}
+    </h1>
+
+    <!-- EDIT MODE -->
+    <input *ngIf="editingName" class="title-input" [(ngModel)]="tempName" autofocus />
+
+  </div>
+
+  <!-- RIGHT: ACTIONS -->
   <div class="header-actions">
+
+    <!-- EDIT / SAVE / CANCEL -->
+    <button class="btn edit" *ngIf="!editingName" (click)="startRename()">
+      Edit
+    </button>
+
+    <button class="btn save" *ngIf="editingName" (click)="saveRename()">
+      Save
+    </button>
+
+    <button class="btn cancel" *ngIf="editingName" (click)="cancelRename()">
+      Cancel
+    </button>
+
     <button class="btn back" (click)="goBack()">Back</button>
     <button class="btn publish" (click)="publish()">Publish</button>
     <button class="btn preview" (click)="togglePreview()">
       {{ showPreview ? 'Close Preview' : 'Preview' }}
     </button>
+
   </div>
 
 </div>
+
 
 
 <!-- ================= TOP LAYOUT ================= -->

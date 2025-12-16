@@ -40,6 +40,36 @@
    BUTTONS
    ======================= */
 
+   .title-wrapper {
+  display: flex;
+  align-items: center;
+}
+
+.template-title {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.edit-icon {
+  font-size: 14px;
+  opacity: 0.5;
+}
+
+.template-title:hover .edit-icon {
+  opacity: 1;
+}
+
+.title-input {
+  font-size: 24px;
+  font-weight: 700;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  padding: 6px 10px;
+  width: 280px;
+}
+
 .btn {
     padding: 8px 16px;
     border-radius: 10px;

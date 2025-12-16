@@ -34,6 +34,33 @@ export class TemplateEditorComponent implements OnInit {
   editorContent = '';
   formValues: any = {};
 
+  editingName = false;
+  tempName = '';
+
+  startRename(): void {
+    this.tempName = this.template.name; // backup
+    this.editingName = true;
+  }
+
+  cancelRename(): void {
+    this.editingName = false;
+    this.tempName = '';
+  }
+
+  saveRename(): void {
+    if (!this.tempName.trim()) return;
+
+    this.template.name = this.tempName.trim();
+    this.editingName = false;
+
+    // Optional: persist immediately
+    this.ts.updateTemplate(this.template.id, {
+      name: this.template.name
+    }).subscribe();
+  }
+
+
+
   // ✅ VALIDATION STATE
   errors: Record<string, string> = {};
 
