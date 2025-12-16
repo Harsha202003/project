@@ -63,6 +63,13 @@ export class TemplateEditorComponent implements OnInit {
       this.template.schema ||= { fields: [] };
       this.template.attachments ||= [];
 
+      this.template.schema.fields.forEach(field => {
+        if (field.type === 'multiselect') {
+          this.formValues[field.key] ??= [];
+        }
+      });
+
+
       // ✅ INITIAL VALIDATION (important for edit mode)
       this.errors = this.validation.validate(
         this.template.schema.fields,

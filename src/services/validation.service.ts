@@ -1,66 +1,55 @@
 import { Injectable } from '@angular/core';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+    providedIn: 'root'
+})
 export class ValidationService {
 
+    /**
+     * Validates form values based on schema fields
+     */
     validate(fields: any[], values: any): Record<string, string> {
         const errors: Record<string, string> = {};
 
+        if (!fields || !values) {
+            return errors;
+        }
+
         for (const field of fields) {
-            const rawValue = values[field.key];
-            const value = typeof rawValue === 'string' ? rawValue.trim() : rawValue;
+            const value = values[field.key];
 
-            // ✅ REQUIRED CHECK
-            if (field.required && (!value && value !== 0)) {
-                errors[field.key] = `${field.label} is required`;
-                continue;
-            }
+            // ===============================
+            // REQUIRED VALIDATION
+            // ===============================
+            if (field.required) {
 
-            // ✅ NUMBER CHECK
-            if (field.type === 'number' && value !== undefined && value !== '') {
-                if (isNaN(value)) {
-                    errors[field.key] = `${field.label} must be a number`;
+                // ✅ MULTISELECT (array required)
+                if (field.type === 'multiselect') {
+                    if (!Array.isArray(value) || value.length === 0) {
+                        errors[field.key] = `${field.label} is required`;
+                    }
                 }
-            }
 
-            // ✅ DATE CHECK
-            if (field.type === 'date' && value) {
-                const date = new Date(value);
-                if (isNaN(date.getTime())) {
-                    errors[field.key] = `${field.label} must be a valid date`;
+                // ✅ CHECKBOX (must be true)
+                else if (field.type === 'checkbox') {
+                    if (value !== true) {
+                        errors[field.key] = `${field.label} is required`;
+                    }
                 }
-            }
 
-            // ✅ MULTIPLE CHECK
-            if (field.type === 'multiselect' && value) {
-                if (!Array.isArray(value) || value.length === 0) {
-                    errors[field.key] = `${field.label} must be a valid selection`;
-                }
-            }
-
-            // ✅ CHECKBOX CHECK
-            if (field.type === 'checkbox' && value) {
-                if (typeof value !== 'boolean') {
-                    errors[field.key] = `${field.label} must be a boolean`;
-                }
-            }
-
-            // ✅ TEXT CHECK
-            if (field.type === 'text' && value) {
-                if (typeof value !== 'string') {
-                    errors[field.key] = `${field.label} must be a string`;
-                }
-            }
-
-            // ✅ TEXTAREA CHECK
-            if (field.type === 'textarea' && value) {
-                if (typeof value !== 'string') {
-                    errors[field.key] = `${field.label} must be a string`;
+                // ✅ ALL OTHER TYPES
+                else {
+                    if (
+                        value === undefined ||
+                        value === null ||
+                        value === ''
+                    ) {
+                        errors[field.key] = `${field.label} is required`;
+                    }
                 }
             }
         }
 
-        return errors; // 🔥 only current errors
+        return errors;
     }
 }
-

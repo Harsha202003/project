@@ -24,13 +24,17 @@ export class DynamicFormComponent {
 
   updateMultiSelect(key: string, event: Event) {
     const select = event.target as HTMLSelectElement;
-    const values = Array.from(select.selectedOptions).map(
+
+    const selectedValues = Array.from(select.selectedOptions).map(
       option => option.value
     );
 
-    this.formValues[key] = values;
+    // ✅ Allow ONE or MULTIPLE values
+    this.formValues[key] = selectedValues;
+
     this.formValuesChange.emit({ ...this.formValues });
   }
+
 
 
   toggleCheckbox(key: string, checked: boolean) {

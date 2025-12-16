@@ -1,49 +1,43 @@
-<div class="form-wrapper">
+<div *ngFor="let field of schema.fields" class="form-field">
 
-  <div class="form-field" *ngFor="let field of schema.fields">
+  <label>
+    {{ field.label }}
+    <span *ngIf="field.required" class="required">*</span>
+  </label>
 
-    <label>
-      {{ field.label }}
-      <span *ngIf="field.required" class="required">*</span>
-    </label>
+  <!-- TEXT -->
+  <input *ngIf="field.type === 'text'" type="text" [(ngModel)]="formValues[field.key]"
+    (ngModelChange)="onValueChange()" />
 
-    <ng-container [ngSwitch]="field.type">
+  <!-- NUMBER -->
+  <input *ngIf="field.type === 'number'" type="number" [(ngModel)]="formValues[field.key]"
+    (ngModelChange)="onValueChange()" />
 
-      <!-- TEXT -->
-      <input *ngSwitchCase="'text'" type="text" [(ngModel)]="formValues[field.key]"
-        (ngModelChange)="updateValue(field.key, $event)" />
+  <!-- DATE -->
+  <input *ngIf="field.type === 'date'" type="date" [(ngModel)]="formValues[field.key]"
+    (ngModelChange)="onValueChange()" />
 
-      <!-- TEXTAREA -->
-      <textarea *ngSwitchCase="'textarea'" rows="3" [(ngModel)]="formValues[field.key]"
-        (ngModelChange)="updateValue(field.key, $event)">
-      </textarea>
+  <!-- TEXTAREA -->
+  <textarea *ngIf="field.type === 'textarea'" [(ngModel)]="formValues[field.key]" (ngModelChange)="onValueChange()">
+  </textarea>
 
-      <!-- NUMBER -->
-      <input *ngSwitchCase="'number'" type="number" [(ngModel)]="formValues[field.key]"
-        (ngModelChange)="updateValue(field.key, $event)" />
+  <!-- ✅ MULTISELECT (IMPORTANT PART) -->
+  <select *ngIf="field.type === 'multiselect'" multiple [(ngModel)]="formValues[field.key]"
+    (ngModelChange)="onValueChange()">
 
-      <!-- DATE -->
-      <input *ngSwitchCase="'date'" type="date" [(ngModel)]="formValues[field.key]"
-        (ngModelChange)="updateValue(field.key, $event)" />
+    <option *ngFor="let opt of field.options" [value]="opt.value">
+      {{ opt.label }}
+    </option>
 
-      <!-- CHECKBOX -->
-      <input *ngSwitchCase="'checkbox'" type="checkbox" [checked]="formValues[field.key]"
-        (change)="toggleCheckbox(field.key, $event.target.checked)" />
+  </select>
 
-      <!-- MULTISELECT -->
-      <select *ngSwitchCase="'multiselect'" multiple (change)="updateMultiSelect(field.key, $event)">
-        <option *ngFor="let opt of field.options" [value]="opt.value">
-          {{ opt.label }}
-        </option>
-      </select>
+  <!-- CHECKBOX -->
+  <input *ngIf="field.type === 'checkbox'" type="checkbox" [(ngModel)]="formValues[field.key]"
+    (change)="onValueChange()" />
 
-    </ng-container>
-
-    <!-- ERROR -->
-    <div class="error" *ngIf="errors[field.key]">
-      {{ errors[field.key] }}
-    </div>
-
+  <!-- ERROR -->
+  <div class="error" *ngIf="errors?.[field.key]">
+    {{ errors[field.key] }}
   </div>
 
 </div>
