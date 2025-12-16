@@ -40,34 +40,34 @@
    BUTTONS
    ======================= */
 
-   .title-wrapper {
-  display: flex;
-  align-items: center;
+.title-wrapper {
+    display: flex;
+    align-items: center;
 }
 
 .template-title {
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
 }
 
 .edit-icon {
-  font-size: 14px;
-  opacity: 0.5;
+    font-size: 14px;
+    opacity: 0.5;
 }
 
 .template-title:hover .edit-icon {
-  opacity: 1;
+    opacity: 1;
 }
 
 .title-input {
-  font-size: 24px;
-  font-weight: 700;
-  border: 1px solid #d1d5db;
-  border-radius: 6px;
-  padding: 6px 10px;
-  width: 280px;
+    font-size: 24px;
+    font-weight: 700;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 6px 10px;
+    width: 280px;
 }
 
 .btn {
@@ -91,6 +91,11 @@
 }
 
 .btn.publish {
+    background: linear-gradient(135deg, #6366f1, #4f46e5);
+    color: #ffffff;
+}
+
+.btn.edit {
     background: linear-gradient(135deg, #6366f1, #4f46e5);
     color: #ffffff;
 }
