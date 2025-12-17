@@ -278,3 +278,36 @@ app-dynamic-form {
         order: 2;
     }
 }
+/* =======================
+   FIXED TEMPLATE BODY
+   ======================= */
+
+.template-body-card {
+  display: flex;
+  flex-direction: column;
+  height: 420px;            /* 🔒 FIXED HEIGHT */
+  max-height: 420px;
+  overflow: hidden;         /* 🔥 stops page growth */
+}
+
+/* Editor wrapper takes remaining space */
+.template-body-card app-rich-text {
+  flex: 1;
+  display: block;
+  overflow: hidden;
+}
+
+/* Actual editable area scrolls */
+.template-body-card ::ng-deep .editor-content,
+.template-body-card ::ng-deep .content,
+.template-body-card ::ng-deep [contenteditable="true"] {
+  height: 100%;
+  overflow-y: auto;         /* ✅ SCROLL INSIDE */
+  padding-right: 6px;
+  box-sizing: border-box;
+}
+
+/* Optional: smoother scrolling */
+.template-body-card ::ng-deep [contenteditable="true"] {
+  scroll-behavior: smooth;
+}

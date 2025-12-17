@@ -49,11 +49,15 @@
   <div class="left-column">
 
     <!-- TEMPLATE BODY -->
-    <div class="card">
-      <h3>Template Body</h3>
-      <app-rich-text [(content)]="editorContent" (contentChange)="onEditorChange($event)">
-      </app-rich-text>
-    </div>
+   <div class="card template-body-card">
+  <h3>Template Body</h3>
+
+  <app-rich-text
+    [(content)]="editorContent"
+    (contentChange)="onEditorChange($event)">
+  </app-rich-text>
+</div>
+
 
     <!-- FORM FIELDS -->
     <div class="card">
